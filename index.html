@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jaspreet Kaur — Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: { 400: '#D4AF37', 500: '#C5A028', 600: '#B08D22' },
+            dark: { 950: '#050505', 900: '#0A0A0A', 800: '#121212', 700: '#1C1C1C' }
+          },
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+            audiowide: ['Audiowide', 'cursive']
+          },
+          animation: {
+            'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+            'fade-in-up-delay-1': 'fadeInUp 0.8s ease-out 0.2s forwards',
+            'fade-in-up-delay-2': 'fadeInUp 0.8s ease-out 0.4s forwards',
+            'fade-in-up-delay-3': 'fadeInUp 0.8s ease-out 0.6s forwards',
+            'fade-in-up-delay-4': 'fadeInUp 0.8s ease-out 0.8s forwards',
+            'scroll-infinite': 'scrollInfinite 20s linear infinite',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4,0,0.6,1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'glow': 'glow 2s ease-in-out infinite alternate',
+            'scan': 'scan 4s linear infinite',
+            'spin-slow': 'spin 8s linear infinite',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(30px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            scrollInfinite: {
+              '0%': { transform: 'translateX(0)' },
+              '100%': { transform: 'translateX(-50%)' }
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-20px)' }
+            },
+            glow: {
+              '0%': { boxShadow: '0 0 20px rgba(212,175,55,0.2)' },
+              '100%': { boxShadow: '0 0 40px rgba(212,175,55,0.5)' }
+            },
+            scan: {
+              '0%': { top: '-10%', opacity: '0' },
+              '10%': { opacity: '1' },
+              '90%': { opacity: '1' },
+              '100%': { top: '110%', opacity: '0' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #050505; color: #fff; overflow-x: hidden; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0A0A0A; }
+    ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 3px; }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-40px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .reveal-left.active { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(40px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .reveal-right.active { opacity: 1; transform: translateX(0); }
+    .reveal-scale { opacity: 0; transform: scale(0.9); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .reveal-scale.active { opacity: 1; transform: scale(1); }
+
+    /* Glass card */
+    .glass-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px 0 rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05);
+      transition: all 500ms;
+    }
+    .glass-card:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(212,175,55,0.2);
+    }
+
+    /* Gold text gradient */
+    .text-gold-gradient {
+      background: linear-gradient(to right, #D4AF37, #f5d77a, #D4AF37);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Hero mask */
+    .hero-mask {
+      mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    }
+
+    /* Liquid card */
+    .liquid-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+      backdrop-filter: blur(24px);
+    }
+
+    /* Dot pattern */
+    .dot-pattern {
+      background-image: radial-gradient(rgba(212,175,55,0.15) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    /* Skill bar animation */
+    .skill-bar-fill {
+      width: 0%;
+      transition: width 1.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .skill-bar-fill.active {
+      /* width set via inline style */
+    }
+
+    /* Nav active link */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #D4AF37;
+      transition: all 300ms;
+      transform: translateX(-50%);
+    }
+    .nav-link:hover::after,
+    .nav-link.active::after { width: 100%; }
+
+    /* Parallax */
+    .parallax-bg { transition: transform 0.1s linear; }
+
+    /* Toast */
+    .toast {
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      clip-path: circle(0% at calc(100% - 40px) 40px);
+      transition: clip-path 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .mobile-menu.open {
+      clip-path: circle(150% at calc(100% - 40px) 40px);
+    }
+
+    /* Image shine */
+    .img-shine { position: relative; overflow: hidden; }
+    .img-shine::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+      transform: rotate(30deg) translateX(-100%);
+      transition: transform 0.8s;
+    }
+    .img-shine:hover::after {
+      transform: rotate(30deg) translateX(100%);
+    }
+
+    /* Typing cursor */
+    .typing-cursor::after {
+      content: '|';
+      animation: blink 1s step-end infinite;
+      color: #D4AF37;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* Stagger children */
+    .stagger-children > * { opacity: 0; transform: translateY(20px); }
+    .stagger-children.active > *:nth-child(1) { animation: fadeInUp 0.6s ease-out 0.1s forwards; }
+    .stagger-children.active > *:nth-child(2) { animation: fadeInUp 0.6s ease-out 0.2s forwards; }
+    .stagger-children.active > *:nth-child(3) { animation: fadeInUp 0.6s ease-out 0.3s forwards; }
+    .stagger-children.active > *:nth-child(4) { animation: fadeInUp 0.6s ease-out 0.4s forwards; }
+    .stagger-children.active > *:nth-child(5) { animation: fadeInUp 0.6s ease-out 0.5s forwards; }
+    .stagger-children.active > *:nth-child(6) { animation: fadeInUp 0.6s ease-out 0.6s forwards; }
+  </style>
+</head>
+<body class="font-inter antialiased">
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#home" class="flex items-center gap-2 group">
+        <div class="w-10 h-10 rounded-xl bg-gold-400 flex items-center justify-center text-dark-950 font-bold text-lg transition-transform duration-300 group-hover:scale-110">J</div>
+        <span class="text-white font-semibold text-lg tracking-tight hidden sm:block">Jaspreet<span class="text-gold-400">.kaur</span></span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#home" class="nav-link text-sm font-medium text-zinc-400 hover:text-white transition-colors">Home</a>
+        <a href="#about" class="nav-link text-sm font-medium text-zinc-400 hover:text-white transition-colors">About</a>
+        <a href="#skills" class="nav-link text-sm font-medium text-zinc-400 hover:text-white transition-colors">Skills</a>
+        <a href="#gallery" class="nav-link text-sm font-medium text-zinc-400 hover:text-white transition-colors">Gallery</a>
+        <a href="#education" class="nav-link text-sm font-medium text-zinc-400 hover:text-white transition-colors">Education</a>
+        <a href="#contact" class="px-6 py-2.5 bg-gold-400 text-dark-950 text-sm font-semibold rounded-full hover:bg-gold-500 hover:-translate-y-1 transition-all duration-150">Contact</a>
+      </div>
+
+      <!-- Mobile Toggle -->
+      <button id="menuToggle" class="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 group" aria-label="Toggle menu">
+        <span class="w-6 h-0.5 bg-white transition-all duration-300 origin-center" id="bar1"></span>
+        <span class="w-6 h-0.5 bg-white transition-all duration-300" id="bar2"></span>
+        <span class="w-4 h-0.5 bg-white transition-all duration-300 origin-center group-hover:w-6" id="bar3"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="mobile-menu fixed inset-0 z-40 bg-dark-950/98 backdrop-blur-xl flex flex-col items-center justify-center gap-8">
+    <a href="#home" class="mobile-nav-link text-2xl font-semibold text-white hover:text-gold-400 transition-colors">Home</a>
+    <a href="#about" class="mobile-nav-link text-2xl font-semibold text-white hover:text-gold-400 transition-colors">About</a>
+    <a href="#skills" class="mobile-nav-link text-2xl font-semibold text-white hover:text-gold-400 transition-colors">Skills</a>
+    <a href="#gallery" class="mobile-nav-link text-2xl font-semibold text-white hover:text-gold-400 transition-colors">Gallery</a>
+    <a href="#education" class="mobile-nav-link text-2xl font-semibold text-white hover:text-gold-400 transition-colors">Education</a>
+    <a href="#contact" class="mt-4 px-8 py-3 bg-gold-400 text-dark-950 font-semibold rounded-full text-lg hover:bg-gold-500 transition-colors">Contact</a>
+  </div>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0">
+      <img src="https://picsum.photos/seed/jaspreet-hero-bg/1920/1080.jpg" alt="" class="w-full h-full object-cover opacity-40 scale-105 hero-mask parallax-bg">
+      <div class="absolute inset-0 bg-gradient-to-b from-dark-950 via-dark-950/70 to-dark-950"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-dark-950 via-dark-950/50 to-transparent"></div>
+    </div>
+
+    <!-- Floating particles -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-gold-400/30 rounded-full animate-float" style="animation-delay: 0s;"></div>
+      <div class="absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-gold-400/20 rounded-full animate-float" style="animation-delay: 2s;"></div>
+      <div class="absolute bottom-1/3 left-1/3 w-1 h-1 bg-gold-400/40 rounded-full animate-float" style="animation-delay: 4s;"></div>
+      <div class="absolute top-2/3 right-1/4 w-2.5 h-2.5 bg-gold-400/15 rounded-full animate-float" style="animation-delay: 1s;"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
+      <!-- Badge -->
+      <div class="opacity-0 animate-fade-in-up inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-400/30 bg-gold-400/5 mb-8">
+        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse-slow"></span>
+        <span class="text-xs font-semibold uppercase tracking-wider text-gold-400">Available for Opportunities</span>
+      </div>
+
+      <!-- Name -->
+      <h1 class="opacity-0 animate-fade-in-up-delay-1 text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight leading-[1.05] mb-6">
+        Hi, I'm<br>
+        <span class="text-gold-gradient">Jaspreet Kaur</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="opacity-0 animate-fade-in-up-delay-2 text-lg md:text-xl font-light text-zinc-400 max-w-2xl mx-auto mb-4 leading-relaxed">
+        Creative artisan specializing in <span class="text-white font-medium">partition making</span> & <span class="text-white font-medium">dress designing</span>. 
+        Building my future with skills and passion.
+      </p>
+
+      <!-- Location -->
+      <div class="opacity-0 animate-fade-in-up-delay-2 flex items-center justify-center gap-2 text-sm text-zinc-500 mb-10">
+        <i data-lucide="map-pin" class="w-4 h-4 text-gold-400"></i>
+        <span>Bharthgarh, Punjab</span>
+        <span class="text-zinc-700">•</span>
+        <span>18 Years Old</span>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="opacity-0 animate-fade-in-up-delay-3 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#contact" class="group px-8 py-4 bg-gold-400 text-dark-950 font-semibold rounded-full hover:bg-gold-500 hover:-translate-y-1 transition-all duration-150 flex items-center gap-2">
+          Get In Touch
+          <i data-lucide="arrow-right" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+        </a>
+        <a href="#about" class="px-8 py-4 border border-white/10 text-white font-semibold rounded-full hover:bg-white/5 hover:border-white/20 transition-all duration-300 flex items-center gap-2">
+          <i data-lucide="play-circle" class="w-4 h-4 text-gold-400"></i>
+          Know More
+        </a>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="opacity-0 animate-fade-in-up-delay-4 mt-16 flex flex-col items-center gap-2">
+        <span class="text-xs text-zinc-600 uppercase tracking-widest">Scroll Down</span>
+        <div class="w-6 h-10 border-2 border-zinc-700 rounded-full flex justify-center pt-2">
+          <div class="w-1 h-2.5 bg-gold-400 rounded-full animate-bounce"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MARQUEE ===== -->
+  <div class="relative py-6 border-y border-dark-700 bg-dark-900/50 overflow-hidden">
+    <div class="flex animate-scroll-infinite whitespace-nowrap">
+      <span class="mx-8 text-sm font-semibold uppercase tracking-widest text-zinc-600">Partition Making</span>
+      <span class="mx-4 text-gold-400">✦</span>
+      <span class="mx-8 text-sm font-semibold uppercase tracking-widest text-zinc-600">Dress Designing</span>
+      <span class="mx-4 text-gold-400">✦</span>
+      <span class="mx-8 text-sm font-semibold uppercase tracking-widest text-zinc-600">Creative Artistry</span>
+      <span class="mx-4 text-gold-400">✦</span>
+      <span class="mx-8 text-sm font-semibold uppercase tracking-widest text-zinc-600">ITI Student</span>
+      <span class="mx-4 text-gold-400">✦</span>
+      <span class="mx-8 text-sm font-semibold uppercase tracking-widest text-zinc-600">From Bharthgarh</span>
+      <span class="mx-4 text-gold-400">✦</span>
+      <span class="mx-8 text-sm font-semibold uppercase tracking-widest text-zinc-600">Partition Making</span>
+      <span class="mx-4 text-gold-400">✦</span>
+      <span class="mx-8 text-sm font-semibold uppercase tracking-widest text-zinc-600">Dress Designing</span>
+      <span class="mx-4 text-gold-400">✦</span>
+      <span class="mx-8 text-sm font-semibold uppercase tracking-widest text-zinc-600">Creative Artistry</span>
+      <span class="mx-4 text-gold-400">✦</span>
+      <span class="mx-8 text-sm font-semibold uppercase tracking-widest text-zinc-600">ITI Student</span>
+      <span class="mx-4 text-gold-400">✦</span>
+      <span class="mx-8 text-sm font-semibold uppercase tracking-widest text-zinc-600">From Bharthgarh</span>
+      <span class="mx-4 text-gold-400">✦</span>
+    </div>
+  </div>
+
+  <!-- ===== ABOUT SECTION ===== -->
+  <section id="about" class="relative py-24 overflow-hidden">
+    <!-- Dot pattern bg -->
+    <div class="absolute top-0 right-0 w-96 h-96 dot-pattern opacity-30"></div>
+
+    <div class="max-w-7xl mx-auto px-6">
+      <!-- Section header -->
+      <div class="text-center mb-16 reveal">
+        <span class="inline-block text-xs font-semibold uppercase tracking-wider text-gold-400 mb-4">About Me</span>
+        <h2 class="text-3xl md:text-5xl font-semibold tracking-tight">
+          A Glimpse Into <span class="text-gold-gradient">My World</span>
+        </h2>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <!-- Image side -->
+        <div class="reveal-left">
+          <div class="relative">
+            <div class="relative rounded-2xl overflow-hidden img-shine aspect-[4/5] max-w-md mx-auto lg:mx-0">
+              <img src="https://picsum.photos/seed/jaspreet-portrait/600/750.jpg" alt="Jaspreet Kaur" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-dark-950 via-transparent to-transparent"></div>
+            </div>
+            <!-- Floating badge -->
+            <div class="absolute -bottom-4 -right-4 md:bottom-8 md:-right-8 glass-card rounded-2xl p-4 animate-float">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-gold-400/10 flex items-center justify-center">
+                  <i data-lucide="sparkles" class="w-6 h-6 text-gold-400"></i>
+                </div>
+                <div>
+                  <p class="text-2xl font-semibold text-white">2+</p>
+                  <p class="text-xs text-zinc-500">Skills Mastered</p>
+                </div>
+              </div>
+            </div>
+            <!-- Decorative border -->
+            <div class="absolute -top-4 -left-4 w-24 h-24 border-t-2 border-l-2 border-gold-400/30 rounded-tl-2xl"></div>
+            <div class="absolute -bottom-4 -right-4 w-24 h-24 border-b-2 border-r-2 border-gold-400/30 rounded-br-2xl hidden md:block"></div>
+          </div>
+        </div>
+
+        <!-- Text side -->
+        <div class="reveal-right">
+          <h3 class="text-2xl md:text-3xl font-semibold tracking-tight mb-6">
+            Passionate about creating <span class="text-gold-gradient">beautiful things</span>
+          </h3>
+          <div class="space-y-4 text-zinc-400 font-light leading-relaxed text-base md:text-lg">
+            <p>
+              Namaste! 🙏 I'm <span class="text-white font-medium">Jaspreet Kaur</span>, an 18-year-old creative soul from <span class="text-white font-medium">Bharthgarh, Punjab</span>. I believe in the power of handmade craftsmanship and the beauty of turning raw materials into something meaningful.
+            </p>
+            <p>
+              I specialize in <span class="text-gold-400 font-medium">partition making</span> — crafting intricate room dividers and decorative panels — and <span class="text-gold-400 font-medium">dress designing</span> — creating beautiful outfits that blend tradition with modern style.
+            </p>
+            <p>
+              After completing my <span class="text-white font-medium">12th standard in 2025</span>, I've now embarked on a new journey at <span class="text-white font-medium">ITI Women Ropar</span>, where I'm sharpening my technical skills to build a brighter future.
+            </p>
+          </div>
+
+          <!-- Quick stats -->
+          <div class="grid grid-cols-3 gap-6 mt-10 pt-10 border-t border-dark-700">
+            <div>
+              <p class="text-3xl font-semibold text-gold-gradient">18</p>
+              <p class="text-sm text-zinc-500 mt-1">Years Old</p>
+            </div>
+            <div>
+              <p class="text-3xl font-semibold text-gold-gradient">2025</p>
+              <p class="text-sm text-zinc-500 mt-1">12th Passout</p>
+            </div>
+            <div>
+              <p class="text-3xl font-semibold text-gold-gradient">ITI</p>
+              <p class="text-sm text-zinc-500 mt-1">Currently Studying</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS SECTION ===== -->
+  <section id="skills" class="relative py-24 bg-dark-900/50">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.04),transparent_50%)]"></div>
+
+    <div class="relative max-w-7xl mx-auto px-6">
+      <!-- Section header -->
+      <div class="text-center mb-16 reveal">
+        <span class="inline-block text-xs font-semibold uppercase tracking-wider text-gold-400 mb-4">My Skills</span>
+        <h2 class="text-3xl md:text-5xl font-semibold tracking-tight">
+          What I <span class="text-gold-gradient">Bring to the Table</span>
+        </h2>
+      </div>
+
+      <!-- Skills grid -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children" id="skillsGrid">
+        <!-- Skill 1 -->
+        <div class="glass-card rounded-2xl p-8 group hover:-translate-y-2 transition-all duration-500">
+          <div class="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mb-6 group-hover:bg-gold-400/20 transition-colors duration-500">
+            <i data-lucide="grid-3x3" class="w-7 h-7 text-gold-400"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 tracking-tight">Partition Making</h3>
+          <p class="text-zinc-500 font-light leading-relaxed text-sm">Designing and crafting decorative room partitions with precision and creative patterns that enhance any living space.</p>
+          <div class="mt-6 pt-6 border-t border-dark-700">
+            <div class="flex justify-between text-sm mb-2">
+              <span class="text-zinc-400">Proficiency</span>
+              <span class="text-gold-400 font-semibold">85%</span>
+            </div>
+            <div class="w-full h-2 bg-dark-700 rounded-full overflow-hidden">
+              <div class="skill-bar-fill h-full bg-gradient-to-r from-gold-400 to-gold-500 rounded-full" data-width="85%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skill 2 -->
+        <div class="glass-card rounded-2xl p-8 group hover:-translate-y-2 transition-all duration-500">
+          <div class="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mb-6 group-hover:bg-gold-400/20 transition-colors duration-500">
+            <i data-lucide="scissors" class="w-7 h-7 text-gold-400"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 tracking-tight">Dress Designing</h3>
+          <p class="text-zinc-500 font-light leading-relaxed text-sm">Creating beautiful, well-fitted garments that combine traditional Punjabi aesthetics with modern fashion sensibilities.</p>
+          <div class="mt-6 pt-6 border-t border-dark-700">
+            <div class="flex justify-between text-sm mb-2">
+              <span class="text-zinc-400">Proficiency</span>
+              <span class="text-gold-400 font-semibold">90%</span>
+            </div>
+            <div class="w-full h-2 bg-dark-700 rounded-full overflow-hidden">
+              <div class="skill-bar-fill h-full bg-gradient-to-r from-gold-400 to-gold-500 rounded-full" data-width="90%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skill 3 -->
+        <div class="glass-card rounded-2xl p-8 group hover:-translate-y-2 transition-all duration-500">
+          <div class="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mb-6 group-hover:bg-gold-400/20 transition-colors duration-500">
+            <i data-lucide="palette" class="w-7 h-7 text-gold-400"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 tracking-tight">Creative Design</h3>
+          <p class="text-zinc-500 font-light leading-relaxed text-sm">Eye for color combinations, patterns, and spatial design that brings artistic vision to life in tangible creations.</p>
+          <div class="mt-6 pt-6 border-t border-dark-700">
+            <div class="flex justify-between text-sm mb-2">
+              <span class="text-zinc-400">Proficiency</span>
+              <span class="text-gold-400 font-semibold">80%</span>
+            </div>
+            <div class="w-full h-2 bg-dark-700 rounded-full overflow-hidden">
+              <div class="skill-bar-fill h-full bg-gradient-to-r from-gold-400 to-gold-500 rounded-full" data-width="80%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skill 4 -->
+        <div class="glass-card rounded-2xl p-8 group hover:-translate-y-2 transition-all duration-500">
+          <div class="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mb-6 group-hover:bg-gold-400/20 transition-colors duration-500">
+            <i data-lucide="ruler" class="w-7 h-7 text-gold-400"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 tracking-tight">Precision Measurement</h3>
+          <p class="text-zinc-500 font-light leading-relaxed text-sm">Accurate measuring and cutting techniques essential for both partition work and garment construction.</p>
+          <div class="mt-6 pt-6 border-t border-dark-700">
+            <div class="flex justify-between text-sm mb-2">
+              <span class="text-zinc-400">Proficiency</span>
+              <span class="text-gold-400 font-semibold">88%</span>
+            </div>
+            <div class="w-full h-2 bg-dark-700 rounded-full overflow-hidden">
+              <div class="skill-bar-fill h-full bg-gradient-to-r from-gold-400 to-gold-500 rounded-full" data-width="88%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skill 5 -->
+        <div class="glass-card rounded-2xl p-8 group hover:-translate-y-2 transition-all duration-500">
+          <div class="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mb-6 group-hover:bg-gold-400/20 transition-colors duration-500">
+            <i data-lucide="book-open" class="w-7 h-7 text-gold-400"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 tracking-tight">Technical Studies</h3>
+          <p class="text-zinc-500 font-light leading-relaxed text-sm">Currently pursuing ITI education at Women Ropar, gaining hands-on technical knowledge and industrial skills.</p>
+          <div class="mt-6 pt-6 border-t border-dark-700">
+            <div class="flex justify-between text-sm mb-2">
+              <span class="text-zinc-400">Proficiency</span>
+              <span class="text-gold-400 font-semibold">70%</span>
+            </div>
+            <div class="w-full h-2 bg-dark-700 rounded-full overflow-hidden">
+              <div class="skill-bar-fill h-full bg-gradient-to-r from-gold-400 to-gold-500 rounded-full" data-width="70%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skill 6 -->
+        <div class="glass-card rounded-2xl p-8 group hover:-translate-y-2 transition-all duration-500">
+          <div class="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mb-6 group-hover:bg-gold-400/20 transition-colors duration-500">
+            <i data-lucide="heart-handshake" class="w-7 h-7 text-gold-400"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 tracking-tight">Dedication & Hard Work</h3>
+          <p class="text-zinc-500 font-light leading-relaxed text-sm">A strong work ethic and commitment to learning new things every day, pushing boundaries and growing constantly.</p>
+          <div class="mt-6 pt-6 border-t border-dark-700">
+            <div class="flex justify-between text-sm mb-2">
+              <span class="text-zinc-400">Proficiency</span>
+              <span class="text-gold-400 font-semibold">95%</span>
+            </div>
+            <div class="w-full h-2 bg-dark-700 rounded-full overflow-hidden">
+              <div class="skill-bar-fill h-full bg-gradient-to-r from-gold-400 to-gold-500 rounded-full" data-width="95%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GALLERY SECTION ===== -->
+  <section id="gallery" class="relative py-24">
+    <div class="max-w-7xl mx-auto px-6">
+      <!-- Section header -->
+      <div class="text-center mb-16 reveal">
+        <span class="inline-block text-xs font-semibold uppercase tracking-wider text-gold-400 mb-4">Gallery</span>
+        <h2 class="text-3xl md:text-5xl font-semibold tracking-tight">
+          My <span class="text-gold-gradient">Creative Works</span>
+        </h2>
+        <p class="text-zinc-500 font-light mt-4 max-w-lg mx-auto">A showcase of my work in partition making and dress designing — each piece crafted with love and attention to detail.</p>
+      </div>
+
+      <!-- Gallery grid -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        <!-- Large image -->
+        <div class="col-span-2 row-span-2 reveal-scale group cursor-pointer">
+          <div class="relative rounded-2xl overflow-hidden h-full min-h-[300px] md:min-h-[500px] img-shine">
+            <img src="https://picsum.photos/seed/partition-art-1/800/800.jpg" alt="Partition Work" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+              <span class="text-xs font-semibold uppercase tracking-wider text-gold-400">Partition Making</span>
+              <h3 class="text-lg font-semibold mt-1">Decorative Room Divider</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Small images -->
+        <div class="reveal-scale group cursor-pointer" style="transition-delay: 0.1s;">
+          <div class="relative rounded-2xl overflow-hidden aspect-square img-shine">
+            <img src="https://picsum.photos/seed/dress-design-1/500/500.jpg" alt="Dress Design" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+              <span class="text-xs font-semibold uppercase tracking-wider text-gold-400">Dress Design</span>
+              <h3 class="text-sm font-semibold mt-1">Traditional Outfit</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal-scale group cursor-pointer" style="transition-delay: 0.2s;">
+          <div class="relative rounded-2xl overflow-hidden aspect-square img-shine">
+            <img src="https://picsum.photos/seed/partition-wood-2/500/500.jpg" alt="Wood Partition" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+              <span class="text-xs font-semibold uppercase tracking-wider text-gold-400">Partition Making</span>
+              <h3 class="text-sm font-semibold mt-1">Wooden Panel Work</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="reveal-scale group cursor-pointer" style="transition-delay: 0.3s;">
+          <div class="relative rounded-2xl overflow-hidden aspect-square img-shine">
+            <img src="https://picsum.photos/seed/fashion-embroidery/500/500.jpg" alt="Embroidery Work" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+              <span class="text-xs font-semibold uppercase tracking-wider text-gold-400">Dress Design</span>
+              <h3 class="text-sm font-semibold mt-1">Embroidery Detail</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal-scale group cursor-pointer" style="transition-delay: 0.4s;">
+          <div class="relative rounded-2xl overflow-hidden aspect-square img-shine">
+            <img src="https://picsum.photos/seed/room-divider-modern/500/500.jpg" alt="Modern Divider" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+              <span class="text-xs font-semibold uppercase tracking-wider text-gold-400">Partition Making</span>
+              <h3 class="text-sm font-semibold mt-1">Modern Room Divider</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal-scale group cursor-pointer" style="transition-delay: 0.5s;">
+          <div class="relative rounded-2xl overflow-hidden aspect-square img-shine">
+            <img src="https://picsum.photos/seed/punjabi-suit-design/500/500.jpg" alt="Suit Design" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+              <span class="text-xs font-semibold uppercase tracking-wider text-gold-400">Dress Design</span>
+              <h3 class="text-sm font-semibold mt-1">Punjabi Suit Design</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EDUCATION TIMELINE ===== -->
+  <section id="education" class="relative py-24 bg-dark-900/50">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(212,175,55,0.04),transparent_50%)]"></div>
+
+    <div class="relative max-w-7xl mx-auto px-6">
+      <!-- Section header -->
+      <div class="text-center mb-16 reveal">
+        <span class="inline-block text-xs font-semibold uppercase tracking-wider text-gold-400 mb-4">My Journey</span>
+        <h2 class="text-3xl md:text-5xl font-semibold tracking-tight">
+          Education & <span class="text-gold-gradient">Milestones</span>
+        </h2>
+      </div>
+
+      <!-- Timeline -->
+      <div class="max-w-3xl mx-auto relative">
+        <!-- Timeline line -->
+        <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-gold-400/50 via-gold-400/20 to-transparent md:-translate-x-px"></div>
+
+        <!-- Item 1 -->
+        <div class="relative flex items-start gap-8 mb-12 reveal-left">
+          <div class="md:w-1/2 md:text-right md:pr-12 hidden md:block">
+            <span class="text-xs font-semibold uppercase tracking-wider text-gold-400">2025 — Present</span>
+            <h3 class="text-xl font-semibold mt-2">ITI Women Ropar</h3>
+            <p class="text-zinc-500 font-light mt-2 text-sm leading-relaxed">Currently pursuing technical education, gaining hands-on skills and industrial training to build a strong professional foundation.</p>
+          </div>
+          <!-- Dot -->
+          <div class="relative z-10 w-12 h-12 flex-shrink-0 rounded-full bg-dark-800 border-2 border-gold-400 flex items-center justify-center animate-glow">
+            <i data-lucide="graduation-cap" class="w-5 h-5 text-gold-400"></i>
+          </div>
+          <div class="md:w-1/2 md:pl-12 pl-4">
+            <div class="md:hidden">
+              <span class="text-xs font-semibold uppercase tracking-wider text-gold-400">2025 — Present</span>
+              <h3 class="text-xl font-semibold mt-2">ITI Women Ropar</h3>
+              <p class="text-zinc-500 font-light mt-2 text-sm leading-relaxed">Currently pursuing technical education, gaining hands-on skills and industrial training.</p>
+            </div>
+            <div class="hidden md:block glass-card rounded-2xl p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                <span class="text-xs font-semibold text-green-500 uppercase tracking-wider">Currently Active</span>
+              </div>
+              <p class="text-zinc-400 text-sm">Learning technical trades and practical skills</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="relative flex items-start gap-8 mb-12 reveal-right">
+          <div class="md:w-1/2 md:text-right md:pr-12 hidden md:block">
+            <div class="glass-card rounded-2xl p-6">
+              <p class="text-zinc-400 text-sm">Successfully completed higher secondary education with dedication and focus on practical skills.</p>
+            </div>
+          </div>
+          <!-- Dot -->
+          <div class="relative z-10 w-12 h-12 flex-shrink-0 rounded-full bg-dark-800 border-2 border-gold-400/50 flex items-center justify-center">
+            <i data-lucide="book-open-check" class="w-5 h-5 text-gold-400/70"></i>
+          </div>
+          <div class="md:w-1/2 md:pl-12 pl-4">
+            <span class="text-xs font-semibold uppercase tracking-wider text-gold-400">2025</span>
+            <h3 class="text-xl font-semibold mt-2">12th Standard — Passed</h3>
+            <p class="text-zinc-500 font-light mt-2 text-sm leading-relaxed">Completed 12th standard education, building academic foundation while nurturing creative talents in partition making and dressing.</p>
+            <div class="md:hidden mt-4 glass-card rounded-2xl p-4">
+              <p class="text-zinc-400 text-sm">Successfully completed higher secondary education.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="relative flex items-start gap-8 mb-12 reveal-left">
+          <div class="md:w-1/2 md:text-right md:pr-12 hidden md:block">
+            <span class="text-xs font-semibold uppercase tracking-wider text-gold-400">Early Years</span>
+            <h3 class="text-xl font-semibold mt-2">Discovered Passion for Crafts</h3>
+            <p class="text-zinc-500 font-light mt-2 text-sm leading-relaxed">Started learning partition making and dress designing from a young age, developing a natural talent for creative handiwork.</p>
+          </div>
+          <!-- Dot -->
+          <div class="relative z-10 w-12 h-12 flex-shrink-0 rounded-full bg-dark-800 border-2 border-gold-400/30 flex items-center justify-center">
+            <i data-lucide="heart" class="w-5 h-5 text-gold-400/50"></i>
+          </div>
+          <div class="md:w-1/2 md:pl-12 pl-4">
+            <div class="md:hidden">
+              <span class="text-xs font-semibold uppercase tracking-wider text-gold-400">Early Years</span>
+              <h3 class="text-xl font-semibold mt-2">Discovered Passion for Crafts</h3>
+              <p class="text-zinc-500 font-light mt-2 text-sm leading-relaxed">Started learning partition making and dress designing from a young age.</p>
+            </div>
+            <div class="hidden md:block glass-card rounded-2xl p-6">
+              <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="map-pin" class="w-4 h-4 text-gold-400"></i>
+                <span class="text-sm text-zinc-400">Bharthgarh, Punjab</span>
+              </div>
+              <p class="text-zinc-400 text-sm">Where the journey of creativity began</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="relative flex items-start gap-8 reveal-right">
+          <div class="md:w-1/2 md:text-right md:pr-12 hidden md:block">
+            <div class="glass-card rounded-2xl p-6 border-gold-400/20">
+              <p class="text-gold-gradient font-semibold text-lg">The Future</p>
+              <p class="text-zinc-400 text-sm mt-2">Sky is the limit! 🚀</p>
+            </div>
+          </div>
+          <!-- Dot -->
+          <div class="relative z-10 w-12 h-12 flex-shrink-0 rounded-full bg-gold-400/10 border-2 border-dashed border-gold-400/40 flex items-center justify-center">
+            <i data-lucide="rocket" class="w-5 h-5 text-gold-400/60"></i>
+          </div>
+          <div class="md:w-1/2 md:pl-12 pl-4">
+            <span class="text-xs font-semibold uppercase tracking-wider text-gold-400/60">Coming Soon</span>
+            <h3 class="text-xl font-semibold mt-2 text-zinc-400">Future Goals</h3>
+            <p class="text-zinc-600 font-light mt-2 text-sm leading-relaxed">Complete ITI, start a small business in partition making & dress designing, and make my family proud.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="relative py-24 overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="https://picsum.photos/seed/jaspreet-quote-bg/1920/600.jpg" alt="" class="w-full h-full object-cover opacity-20 scale-105">
+      <div class="absolute inset-0 bg-gradient-to-r from-dark-950 via-dark-950/90 to-dark-950/70"></div>
+    </div>
+    <div class="relative max-w-4xl mx-auto px-6 text-center reveal">
+      <i data-lucide="quote" class="w-12 h-12 text-gold-400/30 mx-auto mb-8"></i>
+      <blockquote class="text-2xl md:text-4xl font-light leading-relaxed tracking-tight text-white/90">
+        "Creativity isn't about being perfect — it's about putting your <span class="text-gold-gradient font-medium">heart</span> into what you make."
+      </blockquote>
+      <div class="mt-8 flex items-center justify-center gap-3">
+        <div class="w-px h-8 bg-gold-400/30"></div>
+        <span class="text-sm font-semibold text-gold-400">Jaspreet Kaur</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT SECTION ===== -->
+  <section id="contact" class="relative py-24 bg-dark-900/50">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.03),transparent_60%)]"></div>
+
+    <div class="relative max-w-7xl mx-auto px-6">
+      <!-- Section header -->
+      <div class="text-center mb-16 reveal">
+        <span class="inline-block text-xs font-semibold uppercase tracking-wider text-gold-400 mb-4">Get In Touch</span>
+        <h2 class="text-3xl md:text-5xl font-semibold tracking-tight">
+          Let's <span class="text-gold-gradient">Connect</span>
+        </h2>
+        <p class="text-zinc-500 font-light mt-4 max-w-lg mx-auto">Have a project in mind or just want to say hello? I'd love to hear from you!</p>
+      </div>
+
+      <div class="grid lg:grid-cols-5 gap-12">
+        <!-- Contact Info -->
+        <div class="lg:col-span-2 space-y-6 reveal-left">
+          <!-- Info card 1 -->
+          <div class="glass-card rounded-2xl p-6 flex items-start gap-4 group hover:-translate-y-1 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-gold-400/10 flex items-center justify-center flex-shrink-0 group-hover:bg-gold-400/20 transition-colors">
+              <i data-lucide="map-pin" class="w-5 h-5 text-gold-400"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-sm mb-1">Location</h4>
+              <p class="text-zinc-500 text-sm font-light">Bharthgarh, Punjab, India</p>
+            </div>
+          </div>
+
+          <!-- Info card 2 -->
+          <div class="glass-card rounded-2xl p-6 flex items-start gap-4 group hover:-translate-y-1 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-gold-400/10 flex items-center justify-center flex-shrink-0 group-hover:bg-gold-400/20 transition-colors">
+              <i data-lucide="graduation-cap" class="w-5 h-5 text-gold-400"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-sm mb-1">Institution</h4>
+              <p class="text-zinc-500 text-sm font-light">ITI Women Ropar</p>
+            </div>
+          </div>
+
+          <!-- Info card 3 -->
+          <div class="glass-card rounded-2xl p-6 flex items-start gap-4 group hover:-translate-y-1 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-gold-400/10 flex items-center justify-center flex-shrink-0 group-hover:bg-gold-400/20 transition-colors">
+              <i data-lucide="clock" class="w-5 h-5 text-gold-400"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-sm mb-1">Availability</h4>
+              <p class="text-zinc-500 text-sm font-light">Open for opportunities & collaborations</p>
+            </div>
+          </div>
+
+          <!-- Social links -->
+          <div class="pt-6">
+            <p class="text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-4">Find me on</p>
+            <div class="flex gap-3">
+              <a href="#" class="w-11 h-11 rounded-xl bg-dark-700 border border-dark-700 hover:border-gold-400/30 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 group">
+                <svg class="w-5 h-5 text-zinc-500 group-hover:text-gold-400 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              </a>
+              <a href="#" class="w-11 h-11 rounded-xl bg-dark-700 border border-dark-700 hover:border-gold-400/30 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 group">
+                <svg class="w-5 h-5 text-zinc-500 group-hover:text-gold-400 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+              </a>
+              <a href="#" class="w-11 h-11 rounded-xl bg-dark-700 border border-dark-700 hover:border-gold-400/30 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 group">
+                <svg class="w-5 h-5 text-zinc-500 group-hover:text-gold-400 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="lg:col-span-3 reveal-right">
+          <form id="contactForm" class="glass-card rounded-2xl p-8 md:p-10 space-y-6">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2">Your Name</label>
+                <input type="text" required placeholder="Enter your name" class="w-full bg-dark-800 border border-dark-700 rounded-xl px-4 py-3.5 text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-gold-400/50 focus:ring-1 focus:ring-gold-400/20 transition-all duration-300">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2">Your Email</label>
+                <input type="email" required placeholder="Enter your email" class="w-full bg-dark-800 border border-dark-700 rounded-xl px-4 py-3.5 text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-gold-400/50 focus:ring-1 focus:ring-gold-400/20 transition-all duration-300">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2">Subject</label>
+              <input type="text" required placeholder="What's this about?" class="w-full bg-dark-800 border border-dark-700 rounded-xl px-4 py-3.5 text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-gold-400/50 focus:ring-1 focus:ring-gold-400/20 transition-all duration-300">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2">Message</label>
+              <textarea rows="5" required placeholder="Write your message here..." class="w-full bg-dark-800 border border-dark-700 rounded-xl px-4 py-3.5 text-white placeholder-zinc-600 text-sm focus:outline-none focus:border-gold-400/50 focus:ring-1 focus:ring-gold-400/20 transition-all duration-300 resize-none"></textarea>
+            </div>
+            <button type="submit" class="w-full md:w-auto px-10 py-4 bg-gold-400 text-dark-950 font-semibold rounded-full hover:bg-gold-500 hover:-translate-y-1 transition-all duration-150 flex items-center justify-center gap-2 group">
+              <span>Send Message</span>
+              <i data-lucide="send" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="border-t border-dark-700 bg-dark-950">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <!-- Logo -->
+        <div class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-xl bg-gold-400 flex items-center justify-center text-dark-950 font-bold text-lg">J</div>
+          <span class="text-white font-semibold text-lg tracking-tight">Jaspreet<span class="text-gold-400">.kaur</span></span>
+        </div>
+
+        <!-- Quick links -->
+        <div class="flex items-center gap-6 text-sm text-zinc-500">
+          <a href="#home" class="hover:text-gold-400 transition-colors">Home</a>
+          <a href="#about" class="hover:text-gold-400 transition-colors">About</a>
+          <a href="#skills" class="hover:text-gold-400 transition-colors">Skills</a>
+          <a href="#gallery" class="hover:text-gold-400 transition-colors">Gallery</a>
+          <a href="#contact" class="hover:text-gold-400 transition-colors">Contact</a>
+        </div>
+
+        <!-- Copyright -->
+        <p class="text-sm text-zinc-600">
+          © 2025 Jaspreet Kaur. All rights reserved.
+        </p>
+      </div>
+
+      <!-- Bottom line -->
+      <div class="mt-8 pt-8 border-t border-dark-800 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-zinc-700">Made with <span class="text-gold-400">♥</span> from Bharthgarh, Punjab</p>
+        <a href="#home" class="w-10 h-10 rounded-full border border-dark-700 hover:border-gold-400/30 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 group" aria-label="Back to top">
+          <i data-lucide="arrow-up" class="w-4 h-4 text-zinc-500 group-hover:text-gold-400 transition-colors"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== TOAST NOTIFICATION ===== -->
+  <div id="toast" class="toast fixed bottom-6 right-6 z-50 glass-card rounded-2xl p-4 flex items-center gap-3 max-w-sm">
+    <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center flex-shrink-0">
+      <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
+    </div>
+    <div>
+      <p class="text-sm font-semibold text-white">Message Sent!</p>
+      <p class="text-xs text-zinc-500">Thank you, I'll get back to you soon.</p>
+    </div>
+    <button onclick="hideToast()" class="ml-2 text-zinc-600 hover:text-white transition-colors">
+      <i data-lucide="x" class="w-4 h-4"></i>
+    </button>
+  </div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // ===== MOBILE MENU =====
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const bar1 = document.getElementById('bar1');
+    const bar2 = document.getElementById('bar2');
+    const bar3 = document.getElementById('bar3');
+    let menuOpen = false;
+
+    menuToggle.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('open');
+      if (menuOpen) {
+        bar1.style.transform = 'rotate(45deg) translate(4px, 4px)';
+        bar2.style.opacity = '0';
+        bar3.style.transform = 'rotate(-45deg) translate(4px, -4px)';
+        bar3.style.width = '1.5rem';
+        document.body.style.overflow = 'hidden';
+      } else {
+        bar1.style.transform = '';
+        bar2.style.opacity = '1';
+        bar3.style.transform = '';
+        bar3.style.width = '';
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Close mobile menu on link click
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        menuOpen = false;
+        mobileMenu.classList.remove('open');
+        bar1.style.transform = '';
+        bar2.style.opacity = '1';
+        bar3.style.transform = '';
+        bar3.style.width = '';
+        document.body.style.overflow = '';
+      });
+    });
+
+    // ===== NAVBAR SCROLL EFFECT =====
+    const navbar = document.getElementById('navbar');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.scrollY;
+      if (currentScroll > 80) {
+        navbar.style.background = 'rgba(5,5,5,0.85)';
+        navbar.style.backdropFilter = 'blur(20px)';
+        navbar.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+      } else {
+        navbar.style.background = 'transparent';
+        navbar.style.backdropFilter = 'none';
+        navbar.style.borderBottom = 'none';
+      }
+      lastScroll = currentScroll;
+    });
+
+    // ===== ACTIVE NAV LINK =====
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        if (window.scrollY >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // ===== SCROLL REVEAL =====
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger-children');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // ===== SKILL BARS =====
+    const skillBars = document.querySelectorAll('.skill-bar-fill');
+
+    const skillObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const width = entry.target.getAttribute('data-width');
+          entry.target.style.width = width;
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.5 });
+
+    skillBars.forEach(bar => skillObserver.observe(bar));
+
+    // ===== PARALLAX =====
+    const parallaxBg = document.querySelector('.parallax-bg');
+
+    window.addEventListener('scroll', () => {
+      if (parallaxBg) {
+        const scrolled = window.scrollY;
+        parallaxBg.style.transform = `scale(1.05) translateY(${scrolled * 0.3}px)`;
+      }
+    });
+
+    // ===== CONTACT FORM =====
+    const contactForm = document.getElementById('contactForm');
+    const toast = document.getElementById('toast');
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      showToast();
+      contactForm.reset();
+    });
+
+    function showToast() {
+      toast.classList.add('show');
+      setTimeout(() => hideToast(), 4000);
+    }
+
+    function hideToast() {
+      toast.classList.remove('show');
+    }
+
+    // ===== SMOOTH SCROLL (fallback) =====
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const offsetTop = target.offsetTop - 80;
+          window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
