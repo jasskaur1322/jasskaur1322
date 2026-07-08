@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning – Jaspreet Kaur</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        ml: {
+                            dark: '#0a0a1a',
+                            darker: '#050510',
+                            card: '#0f0f2a',
+                            accent: '#6C63FF',
+                            accent2: '#00D9FF',
+                            accent3: '#FF6584',
+                            glow: '#6C63FF33',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        ::selection { background: #6C63FF; color: white; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a1a; }
+        ::-webkit-scrollbar-thumb { background: #6C63FF; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00D9FF; }
+
+        /* Particle Canvas */
+        #particles-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(3deg); }
+        }
+        @keyframes floatReverse {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(20px) rotate(-3deg); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(108,99,255,0.3); }
+            50% { box-shadow: 0 0 40px rgba(108,99,255,0.6), 0 0 80px rgba(108,99,255,0.2); }
+        }
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink {
+            0%, 100% { border-color: transparent; }
+            50% { border-color: #00D9FF; }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(60px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideLeft {
+            from { opacity: 0; transform: translateX(60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(-60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes rotateIn {
+            from { opacity: 0; transform: rotate(-10deg) scale(0.9); }
+            to { opacity: 1; transform: rotate(0deg) scale(1); }
+        }
+        @keyframes neuralPulse {
+            0% { r: 3; opacity: 0.6; }
+            50% { r: 6; opacity: 1; }
+            100% { r: 3; opacity: 0.6; }
+        }
+        @keyframes dashMove {
+            to { stroke-dashoffset: -20; }
+        }
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .animate-on-scroll.slide-left {
+            transform: translateX(-60px);
+        }
+        .animate-on-scroll.slide-left.visible {
+            transform: translateX(0);
+        }
+        .animate-on-scroll.slide-right {
+            transform: translateX(60px);
+        }
+        .animate-on-scroll.slide-right.visible {
+            transform: translateX(0);
+        }
+        .animate-on-scroll.scale-in {
+            transform: scale(0.8);
+        }
+        .animate-on-scroll.scale-in.visible {
+            transform: scale(1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #6C63FF, #00D9FF, #FF6584);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 4s ease infinite;
+        }
+        .gradient-border {
+            position: relative;
+            background: #0f0f2a;
+            border-radius: 1rem;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 1.1rem;
+            background: linear-gradient(135deg, #6C63FF, #00D9FF, #FF6584, #6C63FF);
+            background-size: 300% 300%;
+            animation: gradient-shift 4s ease infinite;
+            z-index: -1;
+        }
+        .glass {
+            background: rgba(15, 15, 42, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(108, 99, 255, 0.15);
+        }
+        .glass-light {
+            background: rgba(108, 99, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(108, 99, 255, 0.1);
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(108, 99, 255, 0.2);
+            border-color: rgba(108, 99, 255, 0.4);
+        }
+        .card-hover:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 30px rgba(108, 99, 255, 0.4);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: linear-gradient(90deg, #6C63FF, #00D9FF);
+            transition: width 0.3s;
+            border-radius: 2px;
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #6C63FF, #00D9FF, #FF6584);
+            z-index: 9999;
+            transition: width 0.1s;
+        }
+
+        .neural-line {
+            stroke-dasharray: 5 5;
+            animation: dashMove 1s linear infinite;
+        }
+
+        .typing-text {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid #00D9FF;
+            animation: typing 3s steps(40) 1s forwards, blink 0.75s step-end infinite;
+            width: 0;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(108,99,255,0.3), rgba(0,217,255,0.3), transparent);
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Tooltip */
+        .tooltip-custom {
+            position: relative;
+        }
+        .tooltip-custom::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%) scale(0.8);
+            background: #1a1a3e;
+            color: #e2e8f0;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+            border: 1px solid rgba(108,99,255,0.2);
+        }
+        .tooltip-custom:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        .stagger-5 { transition-delay: 0.5s; }
+        .stagger-6 { transition-delay: 0.6s; }
+
+        @media (max-width: 768px) {
+            .typing-text {
+                font-size: 0.875rem;
+                animation: typing 2.5s steps(30) 0.5s forwards, blink 0.75s step-end infinite;
+            }
+        }
+    </style>
+</head>
+<body class="bg-ml-dark text-gray-200 font-sans overflow-x-hidden">
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Particle Canvas -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 lg:h-20">
+                <!-- Logo -->
+                <a href="#hero" class="flex items-center gap-2 group">
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-ml-accent to-ml-accent2 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
+                        <i data-lucide="brain" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="font-bold text-lg text-white hidden sm:block">ML<span class="text-ml-accent2">.</span></span>
+                </a>
+
+                <!-- Desktop Nav -->
+                <div class="hidden lg:flex items-center gap-8">
+                    <a href="#introduction" class="nav-link text-sm font-medium text-gray-400 hover:text-white">Introduction</a>
+                    <a href="#what-is-ml" class="nav-link text-sm font-medium text-gray-400 hover:text-white">What is ML</a>
+                    <a href="#types" class="nav-link text-sm font-medium text-gray-400 hover:text-white">Types</a>
+                    <a href="#applications" class="nav-link text-sm font-medium text-gray-400 hover:text-white">Applications</a>
+                    <a href="#advantages" class="nav-link text-sm font-medium text-gray-400 hover:text-white">Pros & Cons</a>
+                    <a href="#tools" class="nav-link text-sm font-medium text-gray-400 hover:text-white">Tools</a>
+                    <a href="#future" class="nav-link text-sm font-medium text-gray-400 hover:text-white">Future</a>
+                </div>
+
+                <!-- CTA Button -->
+                <div class="hidden lg:block">
+                    <a href="#conclusion" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-ml-accent to-ml-accent2 text-white text-sm font-semibold hover:shadow-lg hover:shadow-ml-accent/30 transition-all duration-300 hover:scale-105">
+                        Conclusion
+                    </a>
+                </div>
+
+                <!-- Mobile Hamburger -->
+                <button id="menuBtn" class="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 group" aria-label="Menu">
+                    <span class="w-6 h-0.5 bg-white rounded transition-all duration-300 origin-center" id="bar1"></span>
+                    <span class="w-6 h-0.5 bg-white rounded transition-all duration-300" id="bar2"></span>
+                    <span class="w-4 h-0.5 bg-white rounded transition-all duration-300 origin-center group-hover:w-6" id="bar3"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu fixed inset-0 z-40 bg-ml-darker/98 backdrop-blur-xl flex flex-col items-center justify-center gap-6" id="mobileMenu">
+        <a href="#introduction" class="mobile-nav-link text-2xl font-light text-gray-300 hover:text-white transition-colors">Introduction</a>
+        <a href="#what-is-ml" class="mobile-nav-link text-2xl font-light text-gray-300 hover:text-white transition-colors">What is ML</a>
+        <a href="#types" class="mobile-nav-link text-2xl font-light text-gray-300 hover:text-white transition-colors">Types</a>
+        <a href="#applications" class="mobile-nav-link text-2xl font-light text-gray-300 hover:text-white transition-colors">Applications</a>
+        <a href="#advantages" class="mobile-nav-link text-2xl font-light text-gray-300 hover:text-white transition-colors">Pros & Cons</a>
+        <a href="#tools" class="mobile-nav-link text-2xl font-light text-gray-300 hover:text-white transition-colors">Tools</a>
+        <a href="#future" class="mobile-nav-link text-2xl font-light text-gray-300 hover:text-white transition-colors">Future</a>
+        <a href="#conclusion" class="mobile-nav-link mt-4 px-8 py-3 rounded-full bg-gradient-to-r from-ml-accent to-ml-accent2 text-white font-semibold">Conclusion</a>
+    </div>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-ml-accent/10 rounded-full blur-3xl" style="animation: float 8s ease-in-out infinite;"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-ml-accent2/10 rounded-full blur-3xl" style="animation: floatReverse 7s ease-in-out infinite;"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-ml-accent3/5 rounded-full blur-3xl" style="animation: float 10s ease-in-out infinite;"></div>
+        </div>
+
+        <!-- Neural Network SVG Background -->
+        <svg class="absolute inset-0 w-full h-full opacity-10 z-0" xmlns="http://www.w3.org/2000/svg">
+            <line x1="10%" y1="20%" x2="30%" y2="40%" stroke="#6C63FF" stroke-width="1" class="neural-line"/>
+            <line x1="30%" y1="40%" x2="50%" y2="30%" stroke="#00D9FF" stroke-width="1" class="neural-line"/>
+            <line x1="50%" y1="30%" x2="70%" y2="50%" stroke="#6C63FF" stroke-width="1" class="neural-line"/>
+            <line x1="70%" y1="50%" x2="90%" y2="35%" stroke="#00D9FF" stroke-width="1" class="neural-line"/>
+            <line x1="20%" y1="70%" x2="40%" y2="55%" stroke="#FF6584" stroke-width="1" class="neural-line"/>
+            <line x1="40%" y1="55%" x2="60%" y2="75%" stroke="#6C63FF" stroke-width="1" class="neural-line"/>
+            <line x1="60%" y1="75%" x2="80%" y2="60%" stroke="#00D9FF" stroke-width="1" class="neural-line"/>
+            <line x1="30%" y1="40%" x2="40%" y2="55%" stroke="#FF6584" stroke-width="1" class="neural-line"/>
+            <line x1="50%" y1="30%" x2="60%" y2="75%" stroke="#6C63FF" stroke-width="0.5" class="neural-line"/>
+            <circle cx="10%" cy="20%" r="4" fill="#6C63FF"><animate attributeName="r" values="3;6;3" dur="3s" repeatCount="indefinite"/></circle>
+            <circle cx="30%" cy="40%" r="4" fill="#00D9FF"><animate attributeName="r" values="3;5;3" dur="2.5s" repeatCount="indefinite"/></circle>
+            <circle cx="50%" cy="30%" r="4" fill="#6C63FF"><animate attributeName="r" values="3;6;3" dur="4s" repeatCount="indefinite"/></circle>
+            <circle cx="70%" cy="50%" r="4" fill="#00D9FF"><animate attributeName="r" values="3;5;3" dur="3.5s" repeatCount="indefinite"/></circle>
+            <circle cx="90%" cy="35%" r="4" fill="#FF6584"><animate attributeName="r" values="3;6;3" dur="2.8s" repeatCount="indefinite"/></circle>
+            <circle cx="20%" cy="70%" r="4" fill="#FF6584"><animate attributeName="r" values="3;5;3" dur="3.2s" repeatCount="indefinite"/></circle>
+            <circle cx="40%" cy="55%" r="4" fill="#6C63FF"><animate attributeName="r" values="3;6;3" dur="2.6s" repeatCount="indefinite"/></circle>
+            <circle cx="60%" cy="75%" r="4" fill="#00D9FF"><animate attributeName="r" values="3;5;3" dur="3.8s" repeatCount="indefinite"/></circle>
+            <circle cx="80%" cy="60%" r="4" fill="#6C63FF"><animate attributeName="r" values="3;6;3" dur="3s" repeatCount="indefinite"/></circle>
+        </svg>
+
+        <div class="relative z-10 text-center max-w-5xl mx-auto">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8" style="animation: slideUp 0.8s ease forwards;">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                <span class="text-xs font-semibold text-gray-300 uppercase tracking-widest">COPA Presentation</span>
+            </div>
+
+            <!-- Main Title -->
+            <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight leading-none mb-6" style="animation: slideUp 0.8s ease 0.2s both;">
+                <span class="text-white">Machine</span><br>
+                <span class="gradient-text">Learning</span>
+            </h1>
+
+            <!-- Typing Subtitle -->
+            <div class="h-8 mb-10 flex justify-center" style="animation: slideUp 0.8s ease 0.4s both;">
+                <p class="typing-text text-sm sm:text-base text-ml-accent2 font-mono">
+                    Teaching machines to learn from data...
+                </p>
+            </div>
+
+            <!-- Author Info -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-12" style="animation: slideUp 0.8s ease 0.6s both;">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-ml-accent to-ml-accent2 flex items-center justify-center text-white font-bold text-lg">
+                        JK
+                    </div>
+                    <div class="text-left">
+                        <p class="font-semibold text-white">Jaspreet Kaur</p>
+                        <p class="text-xs text-gray-400">COPA Student</p>
+                    </div>
+                </div>
+                <div class="hidden sm:block w-px h-10 bg-ml-accent/30"></div>
+                <div class="text-left">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider">Institute</p>
+                    <p class="text-sm text-gray-300">Government ITI (Women), Rupnagar</p>
+                </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4" style="animation: slideUp 0.8s ease 0.8s both;">
+                <a href="#introduction" class="group px-8 py-4 rounded-full bg-gradient-to-r from-ml-accent to-ml-accent2 text-white font-semibold flex items-center gap-2 hover:shadow-xl hover:shadow-ml-accent/30 transition-all duration-300 hover:scale-105">
+                    Start Exploring
+                    <i data-lucide="arrow-down" class="w-4 h-4 group-hover:translate-y-1 transition-transform"></i>
+                </a>
+                <a href="#conclusion" class="px-8 py-4 rounded-full glass text-white font-semibold hover:bg-white/10 transition-all duration-300">
+                    Jump to Conclusion
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10" style="animation: slideUp 1s ease 1.2s both;">
+            <span class="text-[10px] uppercase tracking-[0.2em] text-gray-500">Scroll</span>
+            <div class="w-6 h-10 rounded-full border-2 border-gray-600 flex justify-center pt-2">
+                <div class="w-1.5 h-3 rounded-full bg-ml-accent animate-bounce"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== INTRODUCTION ===== -->
+    <section id="introduction" class="relative py-24 lg:py-32 px-4">
+        <div class="section-divider mb-24"></div>
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <!-- Left: Content -->
+                <div class="animate-on-scroll slide-left">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-ml-accent/10 flex items-center justify-center">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-ml-accent"></i>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-[0.2em] text-ml-accent">Introduction</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6 font-serif">
+                        The Dawn of<br><span class="gradient-text">Intelligent Machines</span>
+                    </h2>
+                    <p class="text-lg text-gray-400 leading-relaxed mb-8">
+                        Machine Learning (ML) is a branch of <strong class="text-white">Artificial Intelligence (AI)</strong> that enables computers to learn from data and improve their performance without being explicitly programmed.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-4 py-2 rounded-full glass-light text-sm text-gray-300">Artificial Intelligence</span>
+                        <span class="px-4 py-2 rounded-full glass-light text-sm text-gray-300">Data-Driven</span>
+                        <span class="px-4 py-2 rounded-full glass-light text-sm text-gray-300">Self-Improving</span>
+                        <span class="px-4 py-2 rounded-full glass-light text-sm text-gray-300">Pattern Recognition</span>
+                    </div>
+                </div>
+
+                <!-- Right: Visual -->
+                <div class="animate-on-scroll slide-right">
+                    <div class="relative">
+                        <div class="gradient-border p-8">
+                            <div class="bg-ml-card rounded-xl p-6">
+                                <!-- Code-like visual -->
+                                <div class="flex items-center gap-2 mb-4">
+                                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                                    <span class="ml-3 text-xs text-gray-500 font-mono">machine_learning.py</span>
+                                </div>
+                                <pre class="text-sm font-mono leading-relaxed overflow-x-auto"><code><span class="text-purple-400">import</span> <span class="text-ml-accent2">machine_learning</span> <span class="text-purple-400">as</span> <span class="text-yellow-300">ml</span>
+
+<span class="text-gray-500"># Define the model</span>
+<span class="text-blue-300">model</span> = <span class="text-yellow-300">ml</span>.<span class="text-green-300">create_model</span>(
+    type=<span class="text-ml-accent">"neural_network"</span>,
+    layers=[<span class="text-orange-300">128</span>, <span class="text-orange-300">64</span>, <span class="text-orange-300">32</span>],
+    activation=<span class="text-ml-accent">"relu"</span>
+)
+
+<span class="text-gray-500"># Train with data</span>
+<span class="text-blue-300">model</span>.<span class="text-green-300">train</span>(data=<span class="text-blue-300">dataset</span>, epochs=<span class="text-orange-300">100</span>)
+
+<span class="text-gray-500"># Make predictions</span>
+<span class="text-blue-300">predictions</span> = <span class="text-blue-300">model</span>.<span class="text-green-300">predict</span>(<span class="text-blue-300">new_data</span>)
+<span class="text-purple-400">print</span>(<span class="text-ml-accent">"Accuracy:"</span>, <span class="text-blue-300">model</span>.<span class="text-green-300">accuracy</span>())
+<span class="text-gray-500"># Output: Accuracy: 97.3%</span></code></pre>
+                            </div>
+                        </div>
+                        <!-- Floating Badge -->
+                        <div class="absolute -top-4 -right-4 px-4 py-2 rounded-xl glass text-sm font-bold text-ml-accent2" style="animation: float 4s ease-in-out infinite;">
+                            🚀 97.3% Accuracy
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== WHAT IS ML ===== -->
+    <section id="what-is-ml" class="relative py-24 lg:py-32 px-4">
+        <div class="section-divider mb-24"></div>
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="animate-on-scroll">
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-ml-accent2/10 flex items-center justify-center">
+                        <i data-lucide="help-circle" class="w-5 h-5 text-ml-accent2"></i>
+                    </div>
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-ml-accent2">Definition</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6 font-serif">
+                    What is <span class="gradient-text">Machine Learning?</span>
+                </h2>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto mb-16">
+                    Machine Learning is the science of getting computers to learn and act like humans do, and improve their learning over time in autonomous fashion, by feeding them data and information in the form of observations and real-world interactions.
+                </p>
+            </div>
+
+            <!-- Feature Cards -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="animate-on-scroll stagger-1 card-hover glass rounded-2xl p-6 text-center group cursor-default">
+                    <div class="card-icon w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-ml-accent/20 to-ml-accent/5 flex items-center justify-center transition-all duration-500">
+                        <i data-lucide="cpu" class="w-8 h-8 text-ml-accent"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Subset of AI</h3>
+                    <p class="text-sm text-gray-400">A specialized branch within the broader field of Artificial Intelligence.</p>
+                </div>
+                <div class="animate-on-scroll stagger-2 card-hover glass rounded-2xl p-6 text-center group cursor-default">
+                    <div class="card-icon w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-ml-accent2/20 to-ml-accent2/5 flex items-center justify-center transition-all duration-500">
+                        <i data-lucide="database" class="w-8 h-8 text-ml-accent2"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Learns from Data</h3>
+                    <p class="text-sm text-gray-400">Uses historical data to identify patterns and gain knowledge.</p>
+                </div>
+                <div class="animate-on-scroll stagger-3 card-hover glass rounded-2xl p-6 text-center group cursor-default">
+                    <div class="card-icon w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-ml-accent3/20 to-ml-accent3/5 flex items-center justify-center transition-all duration-500">
+                        <i data-lucide="scan-search" class="w-8 h-8 text-ml-accent3"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Identifies Patterns</h3>
+                    <p class="text-sm text-gray-400">Discovers hidden patterns and correlations within complex datasets.</p>
+                </div>
+                <div class="animate-on-scroll stagger-4 card-hover glass rounded-2xl p-6 text-center group cursor-default">
+                    <div class="card-icon w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-yellow-400/20 to-yellow-400/5 flex items-center justify-center transition-all duration-500">
+                        <i data-lucide="trending-up" class="w-8 h-8 text-yellow-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Makes Predictions</h3>
+                    <p class="text-sm text-gray-400">Predicts outcomes and makes data-driven decisions autonomously.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TYPES OF ML ===== -->
+    <section id="types" class="relative py-24 lg:py-32 px-4">
+        <div class="section-divider mb-24"></div>
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-ml-accent3/10 flex items-center justify-center">
+                        <i data-lucide="git-branch" class="w-5 h-5 text-ml-accent3"></i>
+                    </div>
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-ml-accent3">Categories</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6 font-serif">
+                    Types of <span class="gradient-text">Machine Learning</span>
+                </h2>
+                <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                    Machine Learning is broadly classified into three main types based on how the learning process works.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Supervised Learning -->
+                <div class="animate-on-scroll stagger-1 group">
+                    <div class="card-hover glass rounded-3xl overflow-hidden h-full">
+                        <div class="h-48 bg-gradient-to-br from-ml-accent/20 via-ml-accent/5 to-transparent flex items-center justify-center relative overflow-hidden">
+                            <div class="absolute inset-0 opacity-20">
+                                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="25%" cy="30%" r="4" fill="#6C63FF"/><circle cx="40%" cy="60%" r="4" fill="#6C63FF"/>
+                                    <circle cx="60%" cy="35%" r="4" fill="#6C63FF"/><circle cx="75%" cy="55%" r="4" fill="#6C63FF"/>
+                                    <circle cx="35%" cy="45%" r="4" fill="#00D9FF"/><circle cx="55%" cy="70%" r="4" fill="#00D9FF"/>
+                                    <circle cx="70%" cy="40%" r="4" fill="#00D9FF"/><circle cx="45%" cy="25%" r="4" fill="#00D9FF"/>
+                                    <line x1="25%" y1="30%" x2="35%" y2="45%" stroke="#6C63FF" stroke-width="0.5" opacity="0.5"/>
+                                    <line x1="60%" y1="35%" x2="70%" y2="40%" stroke="#6C63FF" stroke-width="0.5" opacity="0.5"/>
+                                </svg>
+                            </div>
+                            <i data-lucide="graduation-cap" class="w-20 h-20 text-ml-accent/40 group-hover:scale-110 transition-transform duration-500"></i>
+                        </div>
+                        <div class="p-8">
+                            <div class="inline-block px-3 py-1 rounded-full bg-ml-accent/10 text-ml-accent text-xs font-bold uppercase tracking-wider mb-4">Type 01</div>
+                            <h3 class="text-2xl font-bold text-white mb-3">Supervised Learning</h3>
+                            <p class="text-gray-400 leading-relaxed mb-6">Learns from labeled training data. The algorithm maps input to the correct output, like a teacher guiding a student.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-lg bg-white/5 text-xs text-gray-400">Classification</span>
+                                <span class="px-3 py-1 rounded-lg bg-white/5 text-xs text-gray-400">Regression</span>
+                                <span class="px-3 py-1 rounded-lg bg-white/5 text-xs text-gray-400">Labeled Data</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unsupervised Learning -->
+                <div class="animate-on-scroll stagger-2 group">
+                    <div class="card-hover glass rounded-3xl overflow-hidden h-full">
+                        <div class="h-48 bg-gradient-to-br from-ml-accent2/20 via-ml-accent2/5 to-transparent flex items-center justify-center relative overflow-hidden">
+                            <div class="absolute inset-0 opacity-20">
+                                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="30%" cy="40%" r="20" fill="none" stroke="#00D9FF" stroke-width="0.5" opacity="0.5"/>
+                                    <circle cx="30%" cy="40%" r="4" fill="#00D9FF"/><circle cx="25%" cy="35%" r="3" fill="#00D9FF"/>
+                                    <circle cx="35%" cy="45%" r="3" fill="#00D9FF"/><circle cx="28%" cy="48%" r="3" fill="#00D9FF"/>
+                                    <circle cx="70%" cy="50%" r="20" fill="none" stroke="#FF6584" stroke-width="0.5" opacity="0.5"/>
+                                    <circle cx="70%" cy="50%" r="4" fill="#FF6584"/><circle cx="65%" cy="45%" r="3" fill="#FF6584"/>
+                                    <circle cx="75%" cy="55%" r="3" fill="#FF6584"/><circle cx="68%" cy="58%" r="3" fill="#FF6584"/>
+                                </svg>
+                            </div>
+                            <i data-lucide="eye-off" class="w-20 h-20 text-ml-accent2/40 group-hover:scale-110 transition-transform duration-500"></i>
+                        </div>
+                        <div class="p-8">
+                            <div class="inline-block px-3 py-1 rounded-full bg-ml-accent2/10 text-ml-accent2 text-xs font-bold uppercase tracking-wider mb-4">Type 02</div>
+                            <h3 class="text-2xl font-bold text-white mb-3">Unsupervised Learning</h3>
+                            <p class="text-gray-400 leading-relaxed mb-6">Works with unlabeled data. The algorithm discovers hidden patterns and structures on its own without guidance.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-lg bg-white/5 text-xs text-gray-400">Clustering</span>
+                                <span class="px-3 py-1 rounded-lg bg-white/5 text-xs text-gray-400">Dimensionality Reduction</span>
+                                <span class="px-3 py-1 rounded-lg bg-white/5 text-xs text-gray-400">Unlabeled Data</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reinforcement Learning -->
+                <div class="animate-on-scroll stagger-3 group">
+                    <div class="card-hover glass rounded-3xl overflow-hidden h-full">
+                        <div class="h-48 bg-gradient-to-br from-ml-accent3/20 via-ml-accent3/5 to-transparent flex items-center justify-center relative overflow-hidden">
+                            <div class="absolute inset-0 opacity-20">
+                                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="50%" cy="50%" r="6" fill="#FF6584"/>
+                                    <circle cx="30%" cy="30%" r="4" fill="#FF6584" opacity="0.5"/>
+                                    <circle cx="70%" cy="30%" r="4" fill="#FF6584" opacity="0.5"/>
+                                    <circle cx="30%" cy="70%" r="4" fill="#FF6584" opacity="0.5"/>
+                                    <circle cx="70%" cy="70%" r="4" fill="#FF6584" opacity="0.5"/>
+                                    <line x1="50%" y1="50%" x2="30%" y2="30%" stroke="#FF6584" stroke-width="0.5" opacity="0.4"/>
+                                    <line x1="50%" y1="50%" x2="70%" y2="30%" stroke="#FF6584" stroke-width="0.5" opacity="0.4"/>
+                                    <line x1="50%" y1="50%" x2="30%" y2="70%" stroke="#FF6584" stroke-width="0.5" opacity="0.4"/>
+                                    <line x1="50%" y1="50%" x2="70%" y2="70%" stroke="#FF6584" stroke-width="0.5" opacity="0.4"/>
+                                </svg>
+                            </div>
+                            <i data-lucide="gamepad-2" class="w-20 h-20 text-ml-accent3/40 group-hover:scale-110 transition-transform duration-500"></i>
+                        </div>
+                        <div class="p-8">
+                            <div class="inline-block px-3 py-1 rounded-full bg-ml-accent3/10 text-ml-accent3 text-xs font-bold uppercase tracking-wider mb-4">Type 03</div>
+                            <h3 class="text-2xl font-bold text-white mb-3">Reinforcement Learning</h3>
+                            <p class="text-gray-400 leading-relaxed mb-6">Learns by trial and error through interaction with an environment, receiving rewards or penalties for actions.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-lg bg-white/5 text-xs text-gray-400">Reward System</span>
+                                <span class="px-3 py-1 rounded-lg bg-white/5 text-xs text-gray-400">Trial & Error</span>
+                                <span class="px-3 py-1 rounded-lg bg-white/5 text-xs text-gray-400">Agent-Environment</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== APPLICATIONS ===== -->
+    <section id="applications" class="relative py-24 lg:py-32 px-4">
+        <div class="section-divider mb-24"></div>
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-green-400/10 flex items-center justify-center">
+                        <i data-lucide="rocket" class="w-5 h-5 text-green-400"></i>
+                    </div>
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-green-400">Real-World Uses</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6 font-serif">
+                    <span class="gradient-text">Applications</span> of ML
+                </h2>
+                <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                    From healthcare to self-driving cars, Machine Learning is transforming every industry.
+                </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Healthcare -->
+                <div class="animate-on-scroll stagger-1 card-hover glass rounded-2xl p-6 group cursor-default">
+                    <div class="flex items-start gap-4">
+                        <div class="card-icon w-14 h-14 shrink-0 rounded-2xl bg-red-500/10 flex items-center justify-center transition-all duration-500">
+                            <i data-lucide="heart-pulse" class="w-7 h-7 text-red-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">Healthcare</h3>
+                            <p class="text-sm text-gray-400 leading-relaxed">Disease prediction, medical imaging, drug discovery, and personalized treatment plans.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Banking -->
+                <div class="animate-on-scroll stagger-2 card-hover glass rounded-2xl p-6 group cursor-default">
+                    <div class="flex items-start gap-4">
+                        <div class="card-icon w-14 h-14 shrink-0 rounded-2xl bg-green-500/10 flex items-center justify-center transition-all duration-500">
+                            <i data-lucide="landmark" class="w-7 h-7 text-green-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">Banking & Finance</h3>
+                            <p class="text-sm text-gray-400 leading-relaxed">Fraud detection, credit scoring, algorithmic trading, and risk assessment.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="animate-on-scroll stagger-3 card-hover glass rounded-2xl p-6 group cursor-default">
+                    <div class="flex items-start gap-4">
+                        <div class="card-icon w-14 h-14 shrink-0 rounded-2xl bg-blue-500/10 flex items-center justify-center transition-all duration-500">
+                            <i data-lucide="book-open" class="w-7 h-7 text-blue-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">Education</h3>
+                            <p class="text-sm text-gray-400 leading-relaxed">Personalized learning, automated grading, and intelligent tutoring systems.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- E-commerce -->
+                <div class="animate-on-scroll stagger-4 card-hover glass rounded-2xl p-6 group cursor-default">
+                    <div class="flex items-start gap-4">
+                        <div class="card-icon w-14 h-14 shrink-0 rounded-2xl bg-purple-500/10 flex items-center justify-center transition-all duration-500">
+                            <i data-lucide="shopping-cart" class="w-7 h-7 text-purple-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">E-Commerce</h3>
+                            <p class="text-sm text-gray-400 leading-relaxed">Product recommendations, dynamic pricing, demand forecasting, and chatbots.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Self-Driving Cars -->
+                <div class="animate-on-scroll stagger-5 card-hover glass rounded-2xl p-6 group cursor-default">
+                    <div class="flex items-start gap-4">
+                        <div class="card-icon w-14 h-14 shrink-0 rounded-2xl bg-yellow-500/10 flex items-center justify-center transition-all duration-500">
+                            <i data-lucide="car" class="w-7 h-7 text-yellow-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">Self-Driving Cars</h3>
+                            <p class="text-sm text-gray-400 leading-relaxed">Object detection, path planning, real-time decision making, and navigation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Entertainment -->
+                <div class="animate-on-scroll stagger-6 card-hover glass rounded-2xl p-6 group cursor-default">
+                    <div class="flex items-start gap-4">
+                        <div class="card-icon w-14 h-14 shrink-0 rounded-2xl bg-pink-500/10 flex items-center justify-center transition-all duration-500">
+                            <i data-lucide="film" class="w-7 h-7 text-pink-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">Entertainment</h3>
+                            <p class="text-sm text-gray-400 leading-relaxed">Content recommendation, voice assistants, image generation, and gaming AI.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ADVANTAGES & DISADVANTAGES ===== -->
+    <section id="advantages" class="relative py-24 lg:py-32 px-4">
+        <div class="section-divider mb-24"></div>
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-yellow-400/10 flex items-center justify-center">
+                        <i data-lucide="scale" class="w-5 h-5 text-yellow-400"></i>
+                    </div>
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-yellow-400">Evaluation</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6 font-serif">
+                    Advantages & <span class="gradient-text">Disadvantages</span>
+                </h2>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Advantages -->
+                <div class="animate-on-scroll slide-left">
+                    <div class="glass rounded-3xl p-8 lg:p-10 h-full border border-green-500/10">
+                        <div class="flex items-center gap-3 mb-8">
+                            <div class="w-12 h-12 rounded-2xl bg-green-500/10 flex items-center justify-center">
+                                <i data-lucide="thumbs-up" class="w-6 h-6 text-green-400"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">Advantages</h3>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-8 h-8 shrink-0 rounded-full bg-green-500/10 flex items-center justify-center mt-0.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-white mb-1">Fast & Accurate Predictions</h4>
+                                    <p class="text-sm text-gray-400">ML models can process vast amounts of data quickly and deliver highly accurate results.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-8 h-8 shrink-0 rounded-full bg-green-500/10 flex items-center justify-center mt-0.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-white mb-1">Automates Repetitive Tasks</h4>
+                                    <p class="text-sm text-gray-400">Frees up human resources by automating mundane and repetitive workflows.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-8 h-8 shrink-0 rounded-full bg-green-500/10 flex items-center justify-center mt-0.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-white mb-1">Improves Decision-Making</h4>
+                                    <p class="text-sm text-gray-400">Provides data-driven insights that help businesses make smarter decisions.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-8 h-8 shrink-0 rounded-full bg-green-500/10 flex items-center justify-center mt-0.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-white mb-1">Learns from New Data</h4>
+                                    <p class="text-sm text-gray-400">Continuously improves and adapts as more data becomes available over time.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Disadvantages -->
+                <div class="animate-on-scroll slide-right">
+                    <div class="glass rounded-3xl p-8 lg:p-10 h-full border border-red-500/10">
+                        <div class="flex items-center gap-3 mb-8">
+                            <div class="w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center">
+                                <i data-lucide="thumbs-down" class="w-6 h-6 text-red-400"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">Disadvantages</h3>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-8 h-8 shrink-0 rounded-full bg-red-500/10 flex items-center justify-center mt-0.5">
+                                    <i data-lucide="x" class="w-4 h-4 text-red-400"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-white mb-1">Requires Large Amount of Data</h4>
+                                    <p class="text-sm text-gray-400">ML models need massive datasets to train effectively, which may not always be available.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-8 h-8 shrink-0 rounded-full bg-red-500/10 flex items-center justify-center mt-0.5">
+                                    <i data-lucide="x" class="w-4 h-4 text-red-400"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-white mb-1">High Development Cost</h4>
+                                    <p class="text-sm text-gray-400">Building and maintaining ML systems requires significant investment in infrastructure and talent.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-8 h-8 shrink-0 rounded-full bg-red-500/10 flex items-center justify-center mt-0.5">
+                                    <i data-lucide="x" class="w-4 h-4 text-red-400"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-white mb-1">Risk of Biased Results</h4>
+                                    <p class="text-sm text-gray-400">Models can inherit and amplify biases present in the training data.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-8 h-8 shrink-0 rounded-full bg-red-500/10 flex items-center justify-center mt-0.5">
+                                    <i data-lucide="x" class="w-4 h-4 text-red-400"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-white mb-1">Privacy Concerns</h4>
+                                    <p class="text-sm text-gray-400">Collecting and using personal data raises serious ethical and privacy issues.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== POPULAR ML TOOLS ===== -->
+    <section id="tools" class="relative py-24 lg:py-32 px-4">
+        <div class="section-divider mb-24"></div>
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 animate-on-scroll">
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-ml-accent/10 flex items-center justify-center">
+                        <i data-lucide="wrench" class="w-5 h-5 text-ml-accent"></i>
+                    </div>
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-ml-accent">Toolbox</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6 font-serif">
+                    Popular <span class="gradient-text">ML Tools</span>
+                </h2>
+                <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                    The essential tools and libraries every Machine Learning practitioner should know.
+                </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                <!-- Python -->
+                <div class="animate-on-scroll stagger-1 card-hover glass rounded-2xl p-6 text-center group cursor-default">
+                    <div class="card-icon w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/5 flex items-center justify-center transition-all duration-500">
+                        <svg class="w-10 h-10 text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 3.79 2 6v12c0 2.21 4.48 4 10 4s10-1.79 10-4V6c0-2.21-4.48-4-10-4zm0 2c4.42 0 8 1.34 8 3s-3.58 3-8 3-8-1.34-8-3 3.58-3 8-3zM4 18V8.87C5.73 10.07 8.64 10.8 12 10.8s6.27-.73 8-1.93V18c0 1.1-3.58 2.5-8 2.5S4 19.1 4 18z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Python</h3>
+                    <p class="text-xs text-gray-500">Primary Language</p>
+                    <div class="mt-3 flex items-center justify-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+                        <span class="text-[10px] text-green-400 font-semibold">Most Popular</span>
+                    </div>
+                </div>
+
+                <!-- TensorFlow -->
+                <div class="animate-on-scroll stagger-2 card-hover glass rounded-2xl p-6 text-center group cursor-default">
+                    <div class="card-icon w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-orange-500/20 to-orange-600/5 flex items-center justify-center transition-all duration-500">
+                        <i data-lucide="layers" class="w-10 h-10 text-orange-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">TensorFlow</h3>
+                    <p class="text-xs text-gray-500">Deep Learning</p>
+                    <div class="mt-3 flex items-center justify-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>
+                        <span class="text-[10px] text-orange-400 font-semibold">By Google</span>
+                    </div>
+                </div>
+
+                <!-- Scikit-learn -->
+                <div class="animate-on-scroll stagger-3 card-hover glass rounded-2xl p-6 text-center group cursor-default">
+                    <div class="card-icon w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-cyan-600/5 flex items-center justify-center transition-all duration-500">
+                        <i data-lucide="scatter-chart" class="w-10 h-10 text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Scikit-learn</h3>
+                    <p class="text-xs text-gray-500">Classical ML</p>
+                    <div class="mt-3 flex items-center justify-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                        <span class="text-[10px] text-cyan-400 font-semibold">Beginner Friendly</span>
+                    </div>
+                </div>
+
+                <!-- Keras -->
+                <div class="animate-on-scroll stagger-4 card-hover glass rounded-2xl p-6 text-center group cursor-default">
+                    <div class="card-icon w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-red-500/20 to-red-600/5 flex items-center justify-center transition-all duration-500">
+                        <i data-lucide="network" class="w-10 h-10 text-red-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Keras</h3>
+                    <p class="text-xs text-gray-500">Neural Networks</p>
+                    <div class="mt-3 flex items-center justify-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                        <span class="text-[10px] text-red-400 font-semibold">High-Level API</span>
+                    </div>
+                </div>
+
+                <!-- Jupyter -->
+                <div class="animate-on-scroll stagger-5 card-hover glass rounded-2xl p-6 text-center group cursor-default">
+                    <div class="card-icon w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/5 flex items-center justify-center transition-all duration-500">
+                        <i data-lucide="notebook-pen" class="w-10 h-10 text-amber-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Jupyter</h3>
+                    <p class="text-xs text-gray-500">Notebook IDE</p>
+                    <div class="mt-3 flex items-center justify-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                        <span class="text-[10px] text-amber-400 font-semibold">Interactive</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FUTURE SCOPE ===== -->
+    <section id="future" class="relative py-24 lg:py-32 px-4">
+        <div class="section-divider mb-24"></div>
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <!-- Left: Visual -->
+                <div class="animate-on-scroll slide-left order-2 lg:order-1">
+                    <div class="relative">
+                        <!-- Timeline -->
+                        <div class="relative pl-8 border-l-2 border-ml-accent/20 space-y-10">
+                            <div class="relative">
+                                <div class="absolute -left-[2.55rem] w-5 h-5 rounded-full bg-ml-accent border-4 border-ml-dark" style="animation: pulse-glow 2s infinite;"></div>
+                                <div class="glass rounded-2xl p-5 card-hover">
+                                    <span class="text-xs text-ml-accent font-bold">Healthcare</span>
+                                    <p class="text-sm text-gray-300 mt-1
