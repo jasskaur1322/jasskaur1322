@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamalpreet Kaur — Machine Learning Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe',
+                            300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6',
+                            600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af',
+                            900: '#1e3a8a', 950: '#172554'
+                        },
+                        slate: { 850: '#151f2e' }
+                    },
+                    letterSpacing: { tighter: '-0.04em', tight: '-0.02em' }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #ffffff; overflow-x: hidden; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 3px; }
+
+        /* Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.85);
+            transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal-scale.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Stagger children */
+        .stagger-children .reveal:nth-child(1) { transition-delay: 0ms; }
+        .stagger-children .reveal:nth-child(2) { transition-delay: 120ms; }
+        .stagger-children .reveal:nth-child(3) { transition-delay: 240ms; }
+        .stagger-children .reveal:nth-child(4) { transition-delay: 360ms; }
+        .stagger-children .reveal:nth-child(5) { transition-delay: 480ms; }
+
+        /* Hero gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 40%, #93c5fd 70%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-12px) rotate(1deg); }
+            66% { transform: translateY(6px) rotate(-1deg); }
+        }
+        .float { animation: float 6s ease-in-out infinite; }
+        .float-delay { animation: float 6s ease-in-out 2s infinite; }
+        .float-delay-2 { animation: float 6s ease-in-out 4s infinite; }
+
+        /* Pulse glow */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(59,130,246,0.15); }
+            50% { box-shadow: 0 0 40px rgba(59,130,246,0.3); }
+        }
+        .pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+
+        /* Grid pattern */
+        .grid-pattern {
+            background-image:
+                linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        /* Card hover */
+        .ml-card {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .ml-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(59,130,246,0.3);
+            box-shadow: 0 25px 50px -12px rgba(59,130,246,0.15);
+        }
+
+        /* Nav active */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #3b82f6;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            border-radius: 1px;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #ffffff;
+        }
+
+        /* Typing cursor */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cursor { animation: blink 1s step-end infinite; }
+
+        /* Particle canvas */
+        #particles-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* Progress bar on scroll */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa, #93c5fd);
+            z-index: 9999;
+            transition: width 0.1s linear;
+        }
+
+        /* Tool icon hover */
+        .tool-icon {
+            transition: all 0.3s ease;
+        }
+        .tool-icon:hover {
+            transform: scale(1.1) translateY(-4px);
+            box-shadow: 0 20px 40px rgba(59,130,246,0.2);
+        }
+
+        /* Advantage/Disadvantage cards */
+        .ad-card {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .ad-card:hover {
+            border-color: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.03);
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Toast */
+        .toast {
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Counter animation */
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Smooth section bg */
+        .section-dark { background: #0a0a0a; }
+        .section-darker { background: #050505; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Progress Bar -->
+    <div id="progress-bar" style="width: 0%;"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" style="background: transparent;">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#hero" class="flex items-center gap-2.5 group">
+                <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                    <iconify-icon icon="lucide:brain" width="18" class="text-white"></iconify-icon>
+                </div>
+                <span class="text-sm font-semibold tracking-tight">Kamalpreet<span class="text-brand-400">.ml</span></span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#about" class="nav-link text-sm text-neutral-400 font-medium">About</a>
+                <a href="#types" class="nav-link text-sm text-neutral-400 font-medium">Types</a>
+                <a href="#applications" class="nav-link text-sm text-neutral-400 font-medium">Applications</a>
+                <a href="#tools" class="nav-link text-sm text-neutral-400 font-medium">Tools</a>
+                <a href="#contact" class="nav-link text-sm text-neutral-400 font-medium">Contact</a>
+                <a href="#contact" class="ml-2 px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-lg transition-all duration-150 hover:-translate-y-0.5 shadow-lg shadow-brand-600/20">
+                    Get in Touch
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger -->
+            <button id="menu-toggle" class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-white/5 transition-colors">
+                <iconify-icon icon="lucide:menu" width="22" class="text-white" id="menu-icon"></iconify-icon>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 bottom-0 w-72 z-50 bg-neutral-900/95 backdrop-blur-xl border-l border-white/5">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-10">
+                <span class="text-sm font-semibold">Menu</span>
+                <button id="menu-close" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-white/5 transition-colors">
+                    <iconify-icon icon="lucide:x" width="22" class="text-white"></iconify-icon>
+                </button>
+            </div>
+            <div class="flex flex-col gap-4">
+                <a href="#about" class="mobile-link text-lg text-neutral-300 font-medium py-2 border-b border-white/5 hover:text-white transition-colors">About</a>
+                <a href="#types" class="mobile-link text-lg text-neutral-300 font-medium py-2 border-b border-white/5 hover:text-white transition-colors">Types</a>
+                <a href="#applications" class="mobile-link text-lg text-neutral-300 font-medium py-2 border-b border-white/5 hover:text-white transition-colors">Applications</a>
+                <a href="#tools" class="mobile-link text-lg text-neutral-300 font-medium py-2 border-b border-white/5 hover:text-white transition-colors">Tools</a>
+                <a href="#contact" class="mobile-link text-lg text-neutral-300 font-medium py-2 border-b border-white/5 hover:text-white transition-colors">Contact</a>
+                <a href="#contact" class="mt-4 px-5 py-3 bg-brand-600 text-white text-center text-sm font-semibold rounded-lg">Get in Touch</a>
+            </div>
+        </div>
+    </div>
+    <div id="menu-overlay" class="fixed inset-0 bg-black/60 z-40 hidden opacity-0 transition-opacity duration-300"></div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern">
+        <canvas id="particles-canvas"></canvas>
+
+        <!-- Gradient Orbs -->
+        <div class="absolute top-1/4 -left-32 w-96 h-96 bg-brand-600/10 rounded-full blur-3xl float"></div>
+        <div class="absolute bottom-1/4 -right-32 w-96 h-96 bg-brand-400/5 rounded-full blur-3xl float-delay"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-600/5 rounded-full blur-3xl float-delay-2"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center pt-16">
+            <!-- Badge -->
+            <div class="reveal inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                <span class="text-xs font-medium text-neutral-300 tracking-wide">COPA • Government ITI (Women), Rupnagar</span>
+            </div>
+
+            <!-- Name -->
+            <h1 class="reveal text-5xl sm:text-6xl lg:text-8xl font-semibold tracking-tighter leading-[1.05] mb-6">
+                Kamalpreet<br>
+                <span class="gradient-text">Kaur</span>
+            </h1>
+
+            <!-- Subtitle with typing effect -->
+            <div class="reveal mb-8">
+                <p class="text-lg sm:text-xl text-neutral-400 font-light leading-relaxed max-w-2xl mx-auto">
+                    Exploring the world of
+                    <span id="typed-text" class="text-white font-medium"></span>
+                    <span class="cursor text-brand-400">|</span>
+                </p>
+            </div>
+
+            <!-- Description -->
+            <p class="reveal text-sm sm:text-base text-neutral-500 font-light leading-relaxed max-w-xl mx-auto mb-10">
+                A passionate learner diving deep into Artificial Intelligence and Machine Learning — building the future, one model at a time.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="reveal flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#about" class="group w-full sm:w-auto px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl transition-all duration-150 hover:-translate-y-0.5 shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2">
+                    Explore My Work
+                    <iconify-icon icon="lucide:arrow-down" width="16" class="transition-transform group-hover:translate-y-0.5"></iconify-icon>
+                </a>
+                <a href="#contact" class="w-full sm:w-auto px-8 py-3.5 border border-white/10 hover:border-white/20 hover:bg-white/5 text-white text-sm font-semibold rounded-xl transition-all duration-150 hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                    <iconify-icon icon="lucide:mail" width="16"></iconify-icon>
+                    Contact Me
+                </a>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="reveal mt-20 flex flex-col items-center gap-2">
+                <span class="text-[10px] uppercase tracking-widest text-neutral-600 font-medium">Scroll to explore</span>
+                <div class="w-5 h-8 rounded-full border border-white/10 flex items-start justify-center p-1.5">
+                    <div class="w-1 h-2 bg-brand-400 rounded-full animate-bounce"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section-darker py-24 lg:py-32 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Section Header -->
+            <div class="reveal max-w-3xl mb-16">
+                <span class="inline-block text-xs font-semibold uppercase tracking-widest text-brand-400 mb-4">Introduction</span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tighter mb-6">
+                    What is Machine<br><span class="text-neutral-500">Learning?</span>
+                </h2>
+                <p class="text-neutral-400 font-light leading-relaxed text-base lg:text-lg">
+                    Machine Learning (ML) is a branch of Artificial Intelligence that enables computers to learn from data and improve their performance without being explicitly programmed.
+                </p>
+            </div>
+
+            <!-- Feature Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
+                <div class="reveal ml-card rounded-2xl bg-white/[0.02] p-7 group">
+                    <div class="w-12 h-12 rounded-xl bg-brand-600/10 border border-brand-600/20 flex items-center justify-center mb-5 transition-all duration-300 group-hover:bg-brand-600 group-hover:border-brand-600">
+                        <iconify-icon icon="lucide:brain" width="22" class="text-brand-400 transition-colors group-hover:text-white"></iconify-icon>
+                    </div>
+                    <h3 class="text-base font-semibold mb-2 tracking-tight">Subset of AI</h3>
+                    <p class="text-sm text-neutral-500 font-light leading-relaxed">A specialized branch within the broader field of Artificial Intelligence.</p>
+                </div>
+
+                <div class="reveal ml-card rounded-2xl bg-white/[0.02] p-7 group">
+                    <div class="w-12 h-12 rounded-xl bg-brand-600/10 border border-brand-600/20 flex items-center justify-center mb-5 transition-all duration-300 group-hover:bg-brand-600 group-hover:border-brand-600">
+                        <iconify-icon icon="lucide:database" width="22" class="text-brand-400 transition-colors group-hover:text-white"></iconify-icon>
+                    </div>
+                    <h3 class="text-base font-semibold mb-2 tracking-tight">Learns from Data</h3>
+                    <p class="text-sm text-neutral-500 font-light leading-relaxed">Absorbs knowledge from vast datasets and past experiences.</p>
+                </div>
+
+                <div class="reveal ml-card rounded-2xl bg-white/[0.02] p-7 group">
+                    <div class="w-12 h-12 rounded-xl bg-brand-600/10 border border-brand-600/20 flex items-center justify-center mb-5 transition-all duration-300 group-hover:bg-brand-600 group-hover:border-brand-600">
+                        <iconify-icon icon="lucide:scan-search" width="22" class="text-brand-400 transition-colors group-hover:text-white"></iconify-icon>
+                    </div>
+                    <h3 class="text-base font-semibold mb-2 tracking-tight">Identifies Patterns</h3>
+                    <p class="text-sm text-neutral-500 font-light leading-relaxed">Discovers hidden patterns and correlations within complex data.</p>
+                </div>
+
+                <div class="reveal ml-card rounded-2xl bg-white/[0.02] p-7 group">
+                    <div class="w-12 h-12 rounded-xl bg-brand-600/10 border border-brand-600/20 flex items-center justify-center mb-5 transition-all duration-300 group-hover:bg-brand-600 group-hover:border-brand-600">
+                        <iconify-icon icon="lucide:trending-up" width="22" class="text-brand-400 transition-colors group-hover:text-white"></iconify-icon>
+                    </div>
+                    <h3 class="text-base font-semibold mb-2 tracking-tight">Predictions & Decisions</h3>
+                    <p class="text-sm text-neutral-500 font-light leading-relaxed">Makes accurate predictions and intelligent decisions autonomously.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Types of ML Section -->
+    <section id="types" class="section-dark py-24 lg:py-32 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <!-- Background accent -->
+        <div class="absolute top-1/2 right-0 w-72 h-72 bg-brand-600/5 rounded-full blur-3xl -translate-y-1/2"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="reveal text-center max-w-3xl mx-auto mb-16">
+                <span class="inline-block text-xs font-semibold uppercase tracking-widest text-brand-400 mb-4">Categories</span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tighter mb-6">
+                    Types of Machine<br><span class="text-neutral-500">Learning</span>
+                </h2>
+                <p class="text-neutral-400 font-light leading-relaxed">Machine Learning is broadly classified into three fundamental types, each with its own approach to solving problems.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 stagger-children">
+                <!-- Supervised -->
+                <div class="reveal ml-card rounded-2xl bg-white/[0.02] overflow-hidden group">
+                    <div class="h-48 relative overflow-hidden">
+                        <img src="https://picsum.photos/seed/supervised-ml/600/400.jpg" alt="Supervised Learning" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-70">
+                        <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/50 to-transparent"></div>
+                        <div class="absolute bottom-4 left-5">
+                            <span class="px-3 py-1 rounded-full bg-brand-600/20 border border-brand-600/30 text-brand-300 text-xs font-semibold">Type 01</span>
+                        </div>
+                    </div>
+                    <div class="p-7">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-lg bg-brand-600/10 flex items-center justify-center">
+                                <iconify-icon icon="lucide:graduation-cap" width="20" class="text-brand-400"></iconify-icon>
+                            </div>
+                            <h3 class="text-xl font-semibold tracking-tight">Supervised Learning</h3>
+                        </div>
+                        <p class="text-sm text-neutral-400 font-light leading-relaxed mb-5">Learns from labeled training data, making predictions based on known input-output pairs. Used in classification and regression tasks.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-xs text-neutral-400">Classification</span>
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-xs text-neutral-400">Regression</span>
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-xs text-neutral-400">Labeled Data</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unsupervised -->
+                <div class="reveal ml-card rounded-2xl bg-white/[0.02] overflow-hidden group">
+                    <div class="h-48 relative overflow-hidden">
+                        <img src="https://picsum.photos/seed/unsupervised-ml/600/400.jpg" alt="Unsupervised Learning" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-70">
+                        <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/50 to-transparent"></div>
+                        <div class="absolute bottom-4 left-5">
+                            <span class="px-3 py-1 rounded-full bg-brand-600/20 border border-brand-600/30 text-brand-300 text-xs font-semibold">Type 02</span>
+                        </div>
+                    </div>
+                    <div class="p-7">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-lg bg-brand-600/10 flex items-center justify-center">
+                                <iconify-icon icon="lucide:layers" width="20" class="text-brand-400"></iconify-icon>
+                            </div>
+                            <h3 class="text-xl font-semibold tracking-tight">Unsupervised Learning</h3>
+                        </div>
+                        <p class="text-sm text-neutral-400 font-light leading-relaxed mb-5">Works with unlabeled data to discover hidden patterns, groupings, and structures without predefined outcomes.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-xs text-neutral-400">Clustering</span>
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-xs text-neutral-400">Association</span>
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-xs text-neutral-400">Unlabeled Data</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reinforcement -->
+                <div class="reveal ml-card rounded-2xl bg-white/[0.02] overflow-hidden group">
+                    <div class="h-48 relative overflow-hidden">
+                        <img src="https://picsum.photos/seed/reinforcement-ml/600/400.jpg" alt="Reinforcement Learning" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-70">
+                        <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/50 to-transparent"></div>
+                        <div class="absolute bottom-4 left-5">
+                            <span class="px-3 py-1 rounded-full bg-brand-600/20 border border-brand-600/30 text-brand-300 text-xs font-semibold">Type 03</span>
+                        </div>
+                    </div>
+                    <div class="p-7">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-lg bg-brand-600/10 flex items-center justify-center">
+                                <iconify-icon icon="lucide:gamepad-2" width="20" class="text-brand-400"></iconify-icon>
+                            </div>
+                            <h3 class="text-xl font-semibold tracking-tight">Reinforcement Learning</h3>
+                        </div>
+                        <p class="text-sm text-neutral-400 font-light leading-relaxed mb-5">Learns through trial and error by interacting with an environment, receiving rewards or penalties for actions taken.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-xs text-neutral-400">Reward System</span>
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-xs text-neutral-400">Agent</span>
+                            <span class="px-2.5 py-1 rounded-md bg-white/5 text-xs text-neutral-400">Environment</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Applications Section -->
+    <section id="applications" class="section-darker py-24 lg:py-32 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="reveal text-center max-w-3xl mx-auto mb-16">
+                <span class="inline-block text-xs font-semibold uppercase tracking-widest text-brand-400 mb-4">Real-World Impact</span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tighter mb-6">
+                    Applications of<br><span class="text-neutral-500">Machine Learning</span>
+                </h2>
+                <p class="text-neutral-400 font-light leading-relaxed">From saving lives to driving cars, ML is transforming every industry it touches.</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-5 stagger-children">
+                <!-- Healthcare -->
+                <div class="reveal ml-card rounded-2xl bg-white/[0.02] p-6 text-center group">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-red-500/10 to-red-600/5 border border-red-500/10 flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110 group-hover:border-red-500/30">
+                        <iconify-icon icon="lucide:heart-pulse" width="28" class="text-red-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-sm font-semibold mb-2">Healthcare</h3>
+                    <p class="text-xs text-neutral-500 font-light leading-relaxed">Disease prediction, medical imaging, drug discovery</p>
+                </div>
+
+                <!-- Banking -->
+                <div class="reveal ml-card rounded-2xl bg-white/[0.02] p-6 text-center group">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-green-500/10 to-green-600/5 border border-green-500/10 flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110 group-hover:border-green-500/30">
+                        <iconify-icon icon="lucide:landmark" width="28" class="text-green-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-sm font-semibold mb-2">Banking</h3>
+                    <p class="text-xs text-neutral-500 font-light leading-relaxed">Fraud detection, credit scoring, risk assessment</p>
+                </div>
+
+                <!-- Education -->
+                <div class="reveal ml-card rounded-2xl bg-white/[0.02] p-6 text-center group">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-amber-500/10 to-amber-600/5 border border-amber-500/10 flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110 group-hover:border-amber-500/30">
+                        <iconify-icon icon="lucide:book-open" width="28" class="text-amber-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-sm font-semibold mb-2">Education</h3>
+                    <p class="text-xs text-neutral-500 font-light leading-relaxed">Personalized learning, adaptive testing, smart tutoring</p>
+                </div>
+
+                <!-- E-commerce -->
+                <div class="reveal ml-card rounded-2xl bg-white/[0.02] p-6 text-center group">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-purple-500/10 to-purple-600/5 border border-purple-500/10 flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110 group-hover:border-purple-500/30">
+                        <iconify-icon icon="lucide:shopping-cart" width="28" class="text-purple-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-sm font-semibold mb-2">E-commerce</h3>
+                    <p class="text-xs text-neutral-500 font-light leading-relaxed">Recommendation engines, price optimization, chatbots</p>
+                </div>
+
+                <!-- Self-driving -->
+                <div class="reveal ml-card rounded-2xl bg-white/[0.02] p-6 text-center group sm:col-span-2 lg:col-span-1">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-cyan-500/10 to-cyan-600/5 border border-cyan-500/10 flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110 group-hover:border-cyan-500/30">
+                        <iconify-icon icon="lucide:car" width="28" class="text-cyan-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-sm font-semibold mb-2">Self-Driving Cars</h3>
+                    <p class="text-xs text-neutral-500 font-light leading-relaxed">Object detection, path planning, autonomous navigation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advantages & Disadvantages -->
+    <section id="pros-cons" class="section-dark py-24 lg:py-32 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <div class="absolute bottom-0 left-1/3 w-96 h-96 bg-green-500/3 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/3 right-0 w-72 h-72 bg-red-500/3 rounded-full blur-3xl"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="reveal text-center max-w-3xl mx-auto mb-16">
+                <span class="inline-block text-xs font-semibold uppercase tracking-widest text-brand-400 mb-4">Analysis</span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tighter mb-6">
+                    Pros &<span class="text-neutral-500"> Cons</span>
+                </h2>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-10">
+                <!-- Advantages -->
+                <div class="reveal-left">
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="w-10 h-10 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center justify-center">
+                            <iconify-icon icon="lucide:thumbs-up" width="18" class="text-green-400"></iconify-icon>
+                        </div>
+                        <h3 class="text-xl font-semibold tracking-tight">Advantages</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="ad-card rounded-xl bg-white/[0.02] p-5 flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <iconify-icon icon="lucide:zap" width="16" class="text-green-400"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold mb-1">Fast & Accurate Predictions</h4>
+                                <p class="text-xs text-neutral-500 font-light leading-relaxed">Processes massive datasets at incredible speeds with high precision.</p>
+                            </div>
+                        </div>
+                        <div class="ad-card rounded-xl bg-white/[0.02] p-5 flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <iconify-icon icon="lucide:repeat" width="16" class="text-green-400"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold mb-1">Automates Repetitive Tasks</h4>
+                                <p class="text-xs text-neutral-500 font-light leading-relaxed">Frees up human resources by handling mundane, repetitive workflows.</p>
+                            </div>
+                        </div>
+                        <div class="ad-card rounded-xl bg-white/[0.02] p-5 flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <iconify-icon icon="lucide:lightbulb" width="16" class="text-green-400"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold mb-1">Improves Decision-Making</h4>
+                                <p class="text-xs text-neutral-500 font-light leading-relaxed">Provides data-driven insights for better strategic decisions.</p>
+                            </div>
+                        </div>
+                        <div class="ad-card rounded-xl bg-white/[0.02] p-5 flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <iconify-icon icon="lucide:refresh-cw" width="16" class="text-green-400"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold mb-1">Learns from New Data</h4>
+                                <p class="text-xs text-neutral-500 font-light leading-relaxed">Continuously improves and adapts as more data becomes available.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Disadvantages -->
+                <div class="reveal-right">
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+                            <iconify-icon icon="lucide:thumbs-down" width="18" class="text-red-400"></iconify-icon>
+                        </div>
+                        <h3 class="text-xl font-semibold tracking-tight">Disadvantages</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="ad-card rounded-xl bg-white/[0.02] p-5 flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <iconify-icon icon="lucide:hard-drive" width="16" class="text-red-400"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold mb-1">Requires Large Amount of Data</h4>
+                                <p class="text-xs text-neutral-500 font-light leading-relaxed">Needs massive, high-quality datasets to produce reliable results.</p>
+                            </div>
+                        </div>
+                        <div class="ad-card rounded-xl bg-white/[0.02] p-5 flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <iconify-icon icon="lucide:indian-rupee" width="16" class="text-red-400"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold mb-1">High Development Cost</h4>
+                                <p class="text-xs text-neutral-500 font-light leading-relaxed">Requires significant investment in infrastructure, tools, and talent.</p>
+                            </div>
+                        </div>
+                        <div class="ad-card rounded-xl bg-white/[0.02] p-5 flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <iconify-icon icon="lucide:scale" width="16" class="text-red-400"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold mb-1">Risk of Biased Results</h4>
+                                <p class="text-xs text-neutral-500 font-light leading-relaxed">Can inherit and amplify biases present in training data.</p>
+                            </div>
+                        </div>
+                        <div class="ad-card rounded-xl bg-white/[0.02] p-5 flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <iconify-icon icon="lucide:shield-alert" width="16" class="text-red-400"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold mb-1">Privacy Concerns</h4>
+                                <p class="text-xs text-neutral-500 font-light leading-relaxed">Handling sensitive personal data raises serious privacy and ethical issues.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section id="tools" class="section-darker py-24 lg:py-32 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="reveal text-center max-w-3xl mx-auto mb-16">
+                <span class="inline-block text-xs font-semibold uppercase tracking-widest text-brand-400 mb-4">Tech Stack</span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tighter mb-6">
+                    Popular ML<br><span class="text-neutral-500">Tools</span>
+                </h2>
+                <p class="text-neutral-400 font-light leading-relaxed">The essential tools and frameworks powering modern Machine Learning development.</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 stagger-children">
+                <!-- Python -->
+                <div class="reveal tool-icon ml-card rounded-2xl bg-white/[0.02] p-7 text-center cursor-default">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-yellow-500/10 to-yellow-600/5 border border-yellow-500/10 flex items-center justify-center mb-4">
+                        <iconify-icon icon="lucide:code-2" width="30" class="text-yellow-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-sm font-semibold mb-1">Python</h3>
+                    <p class="text-[11px] text-neutral-500 font-light">Primary Language</p>
+                </div>
+
+                <!-- TensorFlow -->
+                <div class="reveal tool-icon ml-card rounded-2xl bg-white/[0.02] p-7 text-center cursor-default">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-orange-500/10 to-orange-600/5 border border-orange-500/10 flex items-center justify-center mb-4">
+                        <iconify-icon icon="lucide:box" width="30" class="text-orange-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-sm font-semibold mb-1">TensorFlow</h3>
+                    <p class="text-[11px] text-neutral-500 font-light">Deep Learning</p>
+                </div>
+
+                <!-- Scikit-learn -->
+                <div class="reveal tool-icon ml-card rounded-2xl bg-white/[0.02] p-7 text-center cursor-default">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/10 flex items-center justify-center mb-4">
+                        <iconify-icon icon="lucide:scatter-chart" width="30" class="text-blue-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-sm font-semibold mb-1">Scikit-learn</h3>
+                    <p class="text-[11px] text-neutral-500 font-light">Classical ML</p>
+                </div>
+
+                <!-- Keras -->
+                <div class="reveal tool-icon ml-card rounded-2xl bg-white/[0.02] p-7 text-center cursor-default">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-red-500/10 to-red-600/5 border border-red-500/10 flex items-center justify-center mb-4">
+                        <iconify-icon icon="lucide:network" width="30" class="text-red-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-sm font-semibold mb-1">Keras</h3>
+                    <p class="text-[11px] text-neutral-500 font-light">Neural Networks</p>
+                </div>
+
+                <!-- Jupyter -->
+                <div class="reveal tool-icon ml-card rounded-2xl bg-white/[0.02] p-7 text-center cursor-default col-span-2 sm:col-span-1">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-amber-500/10 to-amber-600/5 border border-amber-500/10 flex items-center justify-center mb-4">
+                        <iconify-icon icon="lucide:notebook-pen" width="30" class="text-amber-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-sm font-semibold mb-1">Jupyter Notebook</h3>
+                    <p class="text-[11px] text-neutral-500 font-light">IDE / Notebook</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Scope Section -->
+    <section id="future" class="section-dark py-24 lg:py-32 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-brand-600/3 rounded-full blur-3xl"></div>
+
+        <div class="max-w-4xl mx-auto px-6 relative z-10">
+            <div class="reveal-scale ml-card rounded-3xl bg-white/[0.02] border border-white/5 overflow-hidden pulse-glow">
+                <div class="p-10 lg:p-16 text-center">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-brand-600/10 border border-brand-600/20 flex items-center justify-center mb-8">
+                        <iconify-icon icon="lucide:rocket" width="28" class="text-brand-400"></iconify-icon>
+                    </div>
+                    <span class="inline-block text-xs font-semibold uppercase tracking-widest text-brand-400 mb-4">Looking Ahead</span>
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tighter mb-8">
+                        Future Scope
+                    </h2>
+                    <p class="text-neutral-400 font-light leading-relaxed text-base lg:text-lg max-w-2xl mx-auto mb-10">
+                        Machine Learning will continue to improve healthcare, education, finance, agriculture, transportation, and many other industries by making systems smarter and more efficient. The possibilities are limitless.
+                    </p>
+
+                    <!-- Stats -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 pt-8 border-t border-white/5">
+                        <div>
+                            <div class="text-2xl lg:text-3xl font-semibold tracking-tight text-white counter" data-target="175">0</div>
+                            <div class="text-xs text-neutral-500 font-light mt-1">Billion USD Market by 2025</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl lg:text-3xl font-semibold tracking-tight text-white counter" data-target="40">0</div>
+                            <div class="text-xs text-neutral-500 font-light mt-1">% CAGR Growth Rate</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl lg:text-3xl font-semibold tracking-tight text-white counter" data-target="96">0</div>
+                            <div class="text-xs text-neutral-500 font-light mt-1">% Enterprises Using ML</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl lg:text-3xl font-semibold tracking-tight text-white counter" data-target="2">0</div>
+                            <div class="text-xs text-neutral-500 font-light mt-1">Million+ ML Jobs by 2030</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion / CTA Section -->
+    <section id="conclusion" class="section-darker py-24 lg:py-32 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="reveal">
+                <iconify-icon icon="lucide:sparkles" width="32" class="text-brand-400 mb-6"></iconify-icon>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tighter mb-6">
+                    Conclusion
+                </h2>
+                <p class="text-neutral-400 font-light leading-relaxed text-base lg:text-lg max-w-2xl mx-auto mb-4">
+                    Machine Learning is one of the most important technologies of the future. It helps computers learn from data and solve real-world problems efficiently.
+                </p>
+                <p class="text-neutral-500 font-light text-sm">
+                    — Kamalpreet Kaur, COPA, Government ITI (Women), Rupnagar
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section-dark py-24 lg:py-32 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-brand-600/5 rounded-full blur-3xl"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="reveal text-center max-w-3xl mx-auto mb-16">
+                <span class="inline-block text-xs font-semibold uppercase tracking-widest text-brand-400 mb-4">Get in Touch</span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tighter mb-6">
+                    Let's<br><span class="text-neutral-500">Connect</span>
+                </h2>
+                <p class="text-neutral-400 font-light leading-relaxed">Have questions about Machine Learning or want to collaborate? I'd love to hear from you.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-5 gap-10">
+                <!-- Contact Info -->
+                <div class="reveal-left lg:col-span-2 space-y-6">
+                    <div class="ml-card rounded-2xl bg-white/[0.02] p-6 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-brand-600/10 border border-brand-600/20 flex items-center justify-center flex-shrink-0">
+                            <iconify-icon icon="lucide:mail" width="20" class="text-brand-400"></iconify-icon>
+                        </div>
+                        <div>
+                            <p class="text-xs text-neutral-500 font-medium uppercase tracking-wider mb-1">Email</p>
+                            <a href="mailto:kamalpreetkaur@example.com" class="text-sm text-white hover:text-brand-400 transition-colors">kamalpreetkaur@example.com</a>
+                        </div>
+                    </div>
+
+                    <div class="ml-card rounded-2xl bg-white/[0.02] p-6 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-brand-600/10 border border-brand-600/20 flex items-center justify-center flex-shrink-0">
+                            <iconify-icon icon="lucide:map-pin" width="20" class="text-brand-400"></iconify-icon>
+                        </div>
+                        <div>
+                            <p class="text-xs text-neutral-500 font-medium uppercase tracking-wider mb-1">Location</p>
+                            <p class="text-sm text-white">Rupnagar, Punjab, India</p>
+                        </div>
+                    </div>
+
+                    <div class="ml-card rounded-2xl bg-white/[0.02] p-6 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-brand-600/10 border border-brand-600/20 flex items-center justify-center flex-shrink-0">
+                            <iconify-icon icon="lucide:building-2" width="20" class="text-brand-400"></iconify-icon>
+                        </div>
+                        <div>
+                            <p class="text-xs text-neutral-500 font-medium uppercase tracking-wider mb-1">Institute</p>
+                            <p class="text-sm text-white">Govt. ITI (Women), Rupnagar</p>
+                        </div>
+                    </div>
+
+                    <!-- Social Links -->
+                    <div class="flex gap-3 pt-2">
+                        <a href="#" class="w-11 h-11 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center hover:bg-brand-600 hover:border-brand-600 transition-all duration-300 group">
+                            <iconify-icon icon="lucide:linkedin" width="18" class="text-neutral-400 group-hover:text-white transition-colors"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-11 h-11 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center hover:bg-brand-600 hover:border-brand-600 transition-all duration-300 group">
+                            <iconify-icon icon="lucide:github" width="18" class="text-neutral-400 group-hover:text-white transition-colors"></iconify-icon>
+                        </a>
+                        <a href="mailto:kamalpreetkaur@example.com" class="w-11 h-11 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center hover:bg-brand-600 hover:border-brand-600 transition-all duration-300 group">
+                            <iconify-icon icon="lucide:mail" width="18" class="text-neutral-400 group-hover:text-white transition-colors"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-11 h-11 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center hover:bg-brand-600 hover:border-brand-600 transition-all duration-300 group">
+                            <iconify-icon icon="lucide:twitter" width="18" class="text-neutral-400 group-hover:text-white transition-colors"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="reveal-right lg:col-span-3">
+                    <form id="contact-form" class="ml-card rounded-2xl bg-white/[0.02] p-8 lg:p-10 space-y-6">
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wider mb-2">Your Name</label>
+                                <input type="text" required placeholder="John Doe" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-neutral-600 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wider mb-2">Your Email</label>
+                                <input type="email" required placeholder="john@example.com" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-neutral-600 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wider mb-2">Subject</label>
+                            <input type="text" required placeholder="ML Collaboration" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-neutral-600 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wider mb-2">Message</label>
+                            <textarea required rows="5" placeholder="Tell me about your project or question..." class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-neutral-600 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full sm:w-auto px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl transition-all duration-150 hover:-translate-y-0.5 shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2">
+                            <iconify-icon icon="lucide:send" width="16"></iconify-icon>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-md bg-brand-600 flex items-center justify-center">
+                        <iconify-icon icon="lucide:brain" width="14" class="text-white"></iconify-icon>
+                    </div>
+                    <span class="text-sm font-semibold tracking-tight">Kamalpreet<span class="text-brand-400">.ml</span></span>
+                </div>
+                <p class="text-xs text-neutral-600 font-light text-center">
+                    © 2025 Kamalpreet Kaur • COPA • Government ITI (Women), Rupnagar. All rights reserved.
+                </p>
+                <a href="#hero" class="w-10 h-10 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center hover:bg-brand-600 hover:border-brand-600 transition-all duration-300 group" title="Back to top">
+                    <iconify-icon icon="lucide:arrow-up" width="16" class="text-neutral-400 group-hover:text-white transition-colors"></iconify-icon>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast fixed bottom-6 right-6 z-50 px-5 py-3.5 rounded-xl bg-green-600/90 backdrop-blur-sm text-white text-sm font-medium flex items-center gap-2.5 shadow-lg shadow-green-600/20">
+        <iconify-icon icon="lucide:check-circle" width="18"></iconify-icon>
+        <span>Message sent successfully!</span>
+    </div>
+
+    <script>
+        // ==================== PARTICLES CANVAS ====================
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null };
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        canvas.parentElement.addEventListener('mousemove', (e) => {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.4 + 0.1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(59, 130, 246, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.min(80, Math.floor((canvas.width * canvas.height) / 15000));
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+        initParticles();
+
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.strokeStyle = `rgba(59, 130, 246, ${0.06 * (1 - dist / 120)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+                // Mouse connection
+                if (mouse.x && mouse.y) {
+                    const dx = particles[i].x - mouse.x;
+                    const dy = particles[i].y - mouse.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        ctx.strokeStyle = `rgba(59, 130, 246, ${0.15 * (1 - dist / 150)})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            connectParticles();
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // ==================== TYPING EFFECT ====================
+        const typedTexts = ['Machine Learning', 'Artificial Intelligence', 'Deep Learning', 'Data Science', 'Neural Networks'];
+        let textIndex = 0, charIndex = 0, isDeleting = false;
+        const typedEl = document.getElementById('typed-text');
+
+        function typeEffect() {
+            const currentText = typedTexts[textIndex];
+            if (isDeleting) {
+                typedEl.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typedEl.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let speed = isDeleting ? 40 : 80;
+
+            if (!isDeleting && charIndex === currentText.length) {
+                speed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % typedTexts.length;
+                speed = 500;
+            }
+
+            setTimeout(typeEffect, speed);
+        }
+        typeEffect();
+
+        // ==================== SCROLL REVEAL ====================
+        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ==================== NAVBAR SCROLL ====================
+        const navbar = document.getElementById('navbar');
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            // Navbar background
+            if (window.scrollY > 80) {
+                navbar.style.background = 'rgba(10, 10, 10, 0.85)';
+                navbar.style.backdropFilter = 'blur(12px)';
+                navbar.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+            } else {
+                navbar.style.background = 'transparent';
+                navbar.style.backdropFilter = 'none';
+                navbar.style.borderBottom = 'none';
+            }
+
+            // Active nav link
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Progress bar
+            const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollProgress = (window.scrollY / scrollTotal) * 100;
+            document.getElementById('progress-bar').style.width = scrollProgress + '%';
+        });
+
+        // ==================== COUNTER ANIMATION ====================
+        const counters = document.querySelectorAll('.counter');
+        let counterStarted = false;
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !counterStarted) {
+                    counterStarted = true;
+                    counters.forEach(counter => {
+                        const target = parseInt(counter.dataset.target);
+                        const duration = 2000;
+                        const start = performance.now();
+
+                        function updateCounter(now) {
+                            const elapsed = now - start;
+                            const progress = Math.min(elapsed / duration, 1);
+                            // Ease out cubic
+                            const eased = 1 - Math.pow(1 - progress, 3);
+                            counter.textContent = Math.floor(eased * target);
+                            if (progress < 1) {
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                counter.textContent = target;
+                            }
+                        }
+                        requestAnimationFrame(updateCounter);
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(c => counterObserver.observe(c));
+
+        // ==================== MOBILE MENU ====================
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function openMenu() {
+            mobileMenu.classList.add('open');
+            menuOverlay.classList.remove('hidden');
+            setTimeout(() => menuOverlay.style.opacity = '1', 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.remove('open');
+            menuOverlay.style.opacity = '0';
+            setTimeout(() => menuOverlay.classList.add('hidden'), 300);
+            document.body.style.overflow = '';
+        }
+
+        menuToggle.addEventListener('click', openMenu);
+        menuClose.addEventListener('click', closeMenu);
+        menuOverlay.addEventListener('click', closeMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+        // ==================== CONTACT FORM ====================
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            this.reset();
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        });
+
+        // ==================== SMOOTH SCROLL FOR SAFARI ====================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
